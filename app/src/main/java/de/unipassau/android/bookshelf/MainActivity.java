@@ -1,17 +1,26 @@
 package de.unipassau.android.bookshelf;
 
+import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
-import de.unipassau.android.bookshelf.R;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
+
+import de.unipassau.android.bookshelf.ui.barcodereader.BarcodeScanActivity;
 
 public class MainActivity extends AppCompatActivity {
+    private static final String TAG = "MAIN";
+    private static final int RC_BARCODE_CAPTURE = 9001;
+    TextView resultText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,14 +29,41 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        resultText = (TextView) findViewById(R.id.result_isbn);
+
+        FloatingActionButton scanButton = findViewById(R.id.scan_button);
+        scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, BarcodeScanActivity.class);
+
+                startActivityForResult(intent, RC_BARCODE_CAPTURE);
+                }
+
+
         });
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra(BarcodeScanActivity.BarcodeObject);
+                    resultText.setText(barcode.displayValue);
+                    Log.d(TAG, "Barcode read: " + barcode.displayValue);
+                } else {
+                    Log.d(TAG, "No barcode captured, intent data is null");
+                }
+            } else {
+                // Error
+                Log.d(TAG, "Error with Barcode Intend");
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override

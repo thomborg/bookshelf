@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="graphicOverlay" type="id" />
+    <item name="preview" type="id" />
+    <item name="scan_overlay" type="id" />
+</resources>

@@ -30,10 +30,12 @@ public class BookApiClient extends AsyncTask<String, Void, JSONObject> {
 
     @Override
     protected void onPreExecute() {
+        /*
         if(!isNetworkConnected()){
             Log.i(getClass().getName(), "Not connected to the internet");
             cancel(true);
             }
+            */
     }
 
     @Override
@@ -99,10 +101,11 @@ public class BookApiClient extends AsyncTask<String, Void, JSONObject> {
         Log.d(TAG, result.getAuthors());
         super.onPostExecute(jsonObject);
     }
-
+/*
     protected boolean isNetworkConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
+    */
 }
