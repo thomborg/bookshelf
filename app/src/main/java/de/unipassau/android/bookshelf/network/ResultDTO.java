@@ -1,6 +1,6 @@
 package de.unipassau.android.bookshelf.network;
 
-public class Result {
+public class ResultDTO {
     private String title, subtitle, publisher, publishedDate, isbn10, authors,
             thumbnail;
 

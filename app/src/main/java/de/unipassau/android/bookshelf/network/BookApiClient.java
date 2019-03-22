@@ -18,7 +18,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import de.unipassau.android.bookshelf.MainActivity;
 
 /**
  * Artur
@@ -27,14 +26,6 @@ public class BookApiClient extends AsyncTask<String, Void, JSONObject> {
     private static final String API_BASE_URL_ISBN = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
     private static final int TIMEOUT = 8000; //8 seconds
     private static final String TAG = "BookApiClient";
-
-    @Override
-    protected void onPreExecute() {
-        if(!isNetworkConnected()){
-            Log.i(getClass().getName(), "Not connected to the internet");
-            cancel(true);
-            }
-    }
 
     @Override
     protected JSONObject doInBackground(String... isbn) {
@@ -73,15 +64,15 @@ public class BookApiClient extends AsyncTask<String, Void, JSONObject> {
     protected void onPostExecute(JSONObject jsonObject) {
         JSONObject info;
         JSONArray items;
-        Result result = new Result();
+        ResultDTO result = new ResultDTO();
         try {
             if(jsonObject.getInt("totalItems")==0)
                 Log.d(TAG, "No Items found!");
             items = jsonObject.getJSONArray("items");
             info = items.getJSONObject(0).getJSONObject("volumeInfo");
             result.setTitle(info.getString("title"));
-            //result.setSubtitle(info.getString("subtitle"));
-            //result.setPublisher(info.getString("publisher"));
+            result.setSubtitle(info.getString("subtitle"));
+            result.setPublisher(info.getString("publisher"));
             result.setPublishedDate(info.getString("publishedDate"));
             result.setThumbnail(info.getJSONObject("imageLinks").getString("thumbnail"));
             StringBuilder authors = new StringBuilder();
@@ -96,13 +87,13 @@ public class BookApiClient extends AsyncTask<String, Void, JSONObject> {
             e.printStackTrace();
         }
 
-        Log.d(TAG, result.getAuthors());
+        //TODO Problem: Wenn eine Exception geworfen wird, weil zb subtitle nicht vorhanden ist, überspringt es alles was darunter ist!
         super.onPostExecute(jsonObject);
     }
 
-    protected boolean isNetworkConnected() {
+    /*protected boolean isNetworkConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
-    }
+    }*/
 }
