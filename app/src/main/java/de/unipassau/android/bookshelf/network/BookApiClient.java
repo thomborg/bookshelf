@@ -60,36 +60,7 @@ public class BookApiClient extends AsyncTask<String, Void, JSONObject> {
         return null;
     }
 
-    @Override
-    protected void onPostExecute(JSONObject jsonObject) {
-        JSONObject info;
-        JSONArray items;
-        ResultDTO result = new ResultDTO();
-        try {
-            if(jsonObject.getInt("totalItems")==0)
-                Log.d(TAG, "No Items found!");
-            items = jsonObject.getJSONArray("items");
-            info = items.getJSONObject(0).getJSONObject("volumeInfo");
-            result.setTitle(info.getString("title"));
-            result.setSubtitle(info.getString("subtitle"));
-            result.setPublisher(info.getString("publisher"));
-            result.setPublishedDate(info.getString("publishedDate"));
-            result.setThumbnail(info.getJSONObject("imageLinks").getString("thumbnail"));
-            StringBuilder authors = new StringBuilder();
-            JSONArray authorArray = info.getJSONArray("authors");
-            for(int i=0; i<authorArray.length(); i++){
-                authors.append(authorArray.get(i));
-                if(i!=authorArray.length()-1)
-                    authors.append(", ");
-            }
-            result.setAuthors(authors.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        //TODO Problem: Wenn eine Exception geworfen wird, weil zb subtitle nicht vorhanden ist, überspringt es alles was darunter ist!
-        super.onPostExecute(jsonObject);
-    }
 
     /*protected boolean isNetworkConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
