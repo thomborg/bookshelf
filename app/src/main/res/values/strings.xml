@@ -7,4 +7,5 @@
     <string name="auto_focus">Auto Focus</string>
     <string name="flash">Flash</string>
     <string name="barcode_scanner_tooltip">Tap to capture. Pinch/Stretch to zoom</string>
+    <string name="shelf">Shelfs:</string>
 </resources>

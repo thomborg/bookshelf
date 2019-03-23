@@ -9,13 +9,31 @@
     tools:showIn="@layout/activity_main">
 
     <TextView
-        android:id="@+id/result_isbn"
+        android:id="@+id/shelfTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Scan to show ISBN"
+        android:text="@string/shelf"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/booksRecyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/shelfSpinner"/>
+
+    <Spinner
+        android:id="@+id/shelfSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/booksRecyclerView"
+        app:layout_constraintStart_toEndOf="@id/shelfTextView"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/booksRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/shelfSpinner"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>
