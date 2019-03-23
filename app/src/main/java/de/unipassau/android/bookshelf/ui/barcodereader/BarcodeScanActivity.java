@@ -4,28 +4,26 @@ package de.unipassau.android.bookshelf.ui.barcodereader;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -51,8 +49,10 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
     private static final int RC_HANDLE_CAMERA_PERM = 2;
 
     // intend constants
-
     public static final String BarcodeObject = "Barcode";
+
+    boolean autoFocus = true;
+    boolean useFlash = false;
 
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
@@ -73,12 +73,6 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
         mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
 
 
-        // read parameters from the intent used to launch the activity.
-        boolean autoFocus = false;
-        boolean useFlash = false;
-
-
-
         int rc = ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
         if (rc == PackageManager.PERMISSION_GRANTED) {
             createCameraSource(autoFocus, useFlash);
@@ -89,12 +83,18 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
         gestureDetector = new GestureDetector(this, new CaptureGestureListener());
         scaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
-        Snackbar.make(mGraphicOverlay, "Tap to capture. Pinch/Stretch to zoom",
-                Snackbar.LENGTH_LONG)
+        Snackbar.make(mGraphicOverlay, R.string.barcode_scanner_tooltip,
+                Snackbar.LENGTH_INDEFINITE)
                 .show();
-
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_barcode_reader, menu);
+        return true;
+    }
 
 
     /**
@@ -151,6 +151,7 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
         barcodeDetector.setProcessor(
                 new MultiProcessor.Builder<>(barcodeFactory).build());
 
+
         if (!barcodeDetector.isOperational()) {
             // Note: The first time that an app using the barcode or face API is installed on a
             // device, GMS will download a native libraries to the device in order to do detection.
@@ -165,8 +166,8 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
 
             // Check for low storage.  If there is low storage, the native library will not be
             // downloaded, so detection will not become operational.
-            IntentFilter lowstorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
-            boolean hasLowStorage = registerReceiver(null, lowstorageFilter) != null;
+            IntentFilter lowStorageFilter = new IntentFilter(Intent.ACTION_DEVICE_STORAGE_LOW);
+            boolean hasLowStorage = registerReceiver(null, lowStorageFilter) != null;
 
             if (hasLowStorage) {
                 Toast.makeText(this, R.string.low_storage_error, Toast.LENGTH_LONG).show();
@@ -174,13 +175,15 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
             }
         }
 
+
+
         // Creates and starts the camera.  Note that this uses a higher resolution in comparison
         // to other detection examples to enable the barcode detector to detect small barcodes
         // at long distances.
         CameraSource.Builder builder = new CameraSource.Builder(getApplicationContext(), barcodeDetector)
                 .setFacing(CameraSource.CAMERA_FACING_BACK)
                 .setRequestedPreviewSize(1600, 1024)
-                .setRequestedFps(15.0f);
+                .setRequestedFps(30.0f);
 
         // make sure that auto focus is an available option
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
@@ -264,6 +267,40 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
     @Override
     public void onBarcodeDetected(Barcode barcode) {
         Log.i("ISBN", barcode.displayValue);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_use_flash:
+                if (useFlash) {
+                    useFlash = false;
+                    item.setIcon(R.drawable.ic_flash_off);
+                } else {
+                    useFlash = true;
+                    item.setIcon(R.drawable.ic_flash_on);
+                }
+                mPreview.release();
+                createCameraSource(autoFocus, useFlash);
+                startCameraSource();
+                return true;
+            case R.id.action_auto_focus:
+                if (autoFocus) {
+                    autoFocus = false;
+                    item.setIcon(R.drawable.ic_auto_focus_off);
+                } else {
+                    autoFocus = true;
+                    item.setIcon(R.drawable.ic_auto_focus_on);
+                }
+                mPreview.release();
+                createCameraSource(autoFocus, useFlash);
+                startCameraSource();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     /**

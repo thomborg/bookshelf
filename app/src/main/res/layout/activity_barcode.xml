@@ -6,14 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:elevation="4dp"
-        />
-
     <de.unipassau.android.bookshelf.ui.barcodereader.camera.CameraSourcePreview
         android:id="@+id/preview"
         android:layout_width="match_parent"

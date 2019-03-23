@@ -24,11 +24,7 @@ import de.unipassau.android.bookshelf.ui.barcodereader.camera.GraphicOverlay;
  * limitations under the License.
  */
 
-import android.content.Context;
 
-import com.google.android.gms.vision.MultiProcessor;
-import com.google.android.gms.vision.Tracker;
-import com.google.android.gms.vision.barcode.Barcode;
 
 /**
  * Factory for creating a tracker and associated graphic to be associated with a new barcode.  The

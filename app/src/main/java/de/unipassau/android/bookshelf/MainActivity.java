@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, BarcodeScanActivity.class);
 
                 startActivityForResult(intent, RC_BARCODE_CAPTURE);
+
                 }
 
 

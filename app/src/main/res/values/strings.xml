@@ -4,4 +4,7 @@
     <string name="permission_camera_rationale">Permission Camera</string>
     <string name="ok">OK</string>
     <string name="low_storage_error">Low storage on device</string>
+    <string name="auto_focus">Auto Focus</string>
+    <string name="flash">Flash</string>
+    <string name="barcode_scanner_tooltip">Tap to capture. Pinch/Stretch to zoom</string>
 </resources>

@@ -4,15 +4,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_auto_focus"
-        android:icon="@android:drawable/ic_menu_view"
+        android:icon="@drawable/ic_auto_focus_on"
         android:orderInCategory="100"
-        android:title="Auto Focus"
-        app:showAsAction="always" />
+        android:title="@string/auto_focus"
+        app:showAsAction="always"
+        tools:icon="@drawable/ic_auto_focus_on" />
     <item
         android:id="@+id/action_use_flash"
-        android:icon="@android:drawable/ic_dialog_info"
+        android:icon="@drawable/ic_flash_off"
         android:orderInCategory="100"
-        android:title="Flash"
+        android:title="@string/flash"
         app:showAsAction="always" />
 
 
