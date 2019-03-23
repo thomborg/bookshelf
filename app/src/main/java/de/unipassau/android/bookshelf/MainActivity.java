@@ -25,6 +25,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,8 +40,10 @@ import de.unipassau.android.bookshelf.network.BookApiClient;
 import de.unipassau.android.bookshelf.network.ResultDTO;
 import de.unipassau.android.bookshelf.ui.DisplayBookActivity;
 import de.unipassau.android.bookshelf.ui.SettingsActivity;
+import de.unipassau.android.bookshelf.ui.barcodereader.BarcodeScanActivity;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int RC_BARCODE_CAPTURE = 9001;
 
     Adapter adapter;
     List<BookResult> list;
@@ -69,10 +74,35 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainAsyncTask client = new MainAsyncTask();
-                client.execute("9783791034560");
+                Intent intent = new Intent(MainActivity.this, BarcodeScanActivity.class);
+
+                startActivityForResult(intent, RC_BARCODE_CAPTURE);
             }
+
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_BARCODE_CAPTURE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra(BarcodeScanActivity.BarcodeObject);
+                    Log.d(TAG, "Barcode read: " + barcode.displayValue);
+                    // Send request
+                    MainAsyncTask client = new MainAsyncTask();
+                    client.execute(barcode.displayValue);
+                } else {
+                    Log.d(TAG, "No barcode captured, intent data is null");
+                }
+            } else {
+                // Error
+                Log.d(TAG, "Error with Barcode Intend");
+            }
+        }
+        else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -107,30 +137,32 @@ public class MainActivity extends AppCompatActivity {
             try {
                 if(jsonObject.has("totalItems") && jsonObject.getInt("totalItems")==0)
                     Log.d(TAG, "No Items found!");
-                if(jsonObject.has("items"))
-                    items = jsonObject.getJSONArray("items");
-                if(items.getJSONObject(0).has("volumeInfo"))
-                    info = items.getJSONObject(0).getJSONObject("volumeInfo");
-                if(info.has("title"))
-                    result.setTitle(info.getString("title"));
-                if(info.has("subtitle"))
-                    result.setSubtitle(info.getString("subtitle"));
-                if(info.has("publisher"))
-                    result.setPublisher(info.getString("publisher"));
-                if(info.has("publishedDate"))
-                    result.setPublishedDate(info.getString("publishedDate"));
-                if(info.has("imageLinks"))
-                    result.setThumbnail(info.getJSONObject("imageLinks").getString("thumbnail"));
-                StringBuilder authors = new StringBuilder();
-                JSONArray authorArray;
-                if(info.has("authors")) {
-                    authorArray = info.getJSONArray("authors");
-                    for (int i = 0; i < authorArray.length(); i++) {
-                        authors.append(authorArray.get(i));
-                        if (i != authorArray.length() - 1)
-                            authors.append(", ");
+                else {
+                    if (jsonObject.has("items"))
+                        items = jsonObject.getJSONArray("items");
+                    if (items.getJSONObject(0).has("volumeInfo"))
+                        info = items.getJSONObject(0).getJSONObject("volumeInfo");
+                    if (info.has("title"))
+                        result.setTitle(info.getString("title"));
+                    if (info.has("subtitle"))
+                        result.setSubtitle(info.getString("subtitle"));
+                    if (info.has("publisher"))
+                        result.setPublisher(info.getString("publisher"));
+                    if (info.has("publishedDate"))
+                        result.setPublishedDate(info.getString("publishedDate"));
+                    if (info.has("imageLinks"))
+                        result.setThumbnail(info.getJSONObject("imageLinks").getString("thumbnail"));
+                    StringBuilder authors = new StringBuilder();
+                    JSONArray authorArray;
+                    if (info.has("authors")) {
+                        authorArray = info.getJSONArray("authors");
+                        for (int i = 0; i < authorArray.length(); i++) {
+                            authors.append(authorArray.get(i));
+                            if (i != authorArray.length() - 1)
+                                authors.append(", ");
+                        }
+                        result.setAuthors(authors.toString());
                     }
-                    result.setAuthors(authors.toString());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

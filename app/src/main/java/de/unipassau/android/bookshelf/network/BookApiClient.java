@@ -18,6 +18,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.net.ssl.HttpsURLConnection;
+
 
 /**
  * Artur
@@ -30,10 +32,10 @@ public class BookApiClient extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected JSONObject doInBackground(String... isbn) {
         try {
-            HttpURLConnection connection = null;
+            HttpsURLConnection connection = null;
             try {
                 URL url = new URL(API_BASE_URL_ISBN + isbn[0]);
-                connection = (HttpURLConnection) url.openConnection();
+                connection = (HttpsURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
                 connection.setReadTimeout(TIMEOUT);
                 connection.setConnectTimeout(TIMEOUT);
