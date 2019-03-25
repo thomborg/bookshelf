@@ -1,16 +1,20 @@
 package de.unipassau.android.bookshelf;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -24,9 +28,15 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,8 +68,10 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.booksRecyclerView);
         list = new ArrayList<>();
         adapter = new Adapter(list);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(llm);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, llm.getOrientation()));
         list.add(new BookResult("Artur", "Hallo", ""));
         list.add(new BookResult("Thomas", "Tschüss", ""));
         adapter.notifyDataSetChanged();
@@ -68,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         List<String> shelfs = new ArrayList<>();
         shelfs.add("Shelf 1");
         shelfs.add("Shelf 2");
-        shelfSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, shelfs));
+        shelfSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, shelfs));
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -162,16 +174,15 @@ public class MainActivity extends AppCompatActivity {
                                 authors.append(", ");
                         }
                         result.setAuthors(authors.toString());
+                        Log.d(TAG, result.getAuthors());
                     }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            Log.d(TAG, result.getAuthors());
 
-            list.clear();
             list.add(new BookResult(result.getAuthors(), result.getTitle(), result.getThumbnail()));
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemChanged(list.size()-1);
 
             super.onPostExecute(jsonObject);
         }
@@ -180,7 +191,6 @@ public class MainActivity extends AppCompatActivity {
     public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
         List<BookResult> bookResults;
-        ImageView tempImgView;
 
         Adapter(List<BookResult> bookResults){
             this.bookResults = bookResults;
@@ -194,18 +204,52 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int i) {
             viewHolder.title.setText(bookResults.get(i).getTitel());
             viewHolder.author.setText(bookResults.get(i).getAuthor());
-            tempImgView = viewHolder.cover;
+            if(!bookResults.get(i).getThumbnail().isEmpty()){
+                Picasso.get().load(bookResults.get(i).getThumbnail())
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                        .error(R.drawable.ic_flash_off) //TODO richtige drawables
+                        .into(viewHolder.cover);
+            }
+            else{
+                viewHolder.cover.setImageResource(R.drawable.ic_library_books_black_24dp); //TODO hier auch
+            }
 
-            new DownloadImage().execute(bookResults.get(i).getThumbnail());
-
+            //TODO richtigen Eintrag bei Click ansprechen
             viewHolder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(MainActivity.this, DisplayBookActivity.class);
                     startActivity(i);
+                }
+            });
+            viewHolder.layout.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    final AlertDialog noticeDialog = new AlertDialog.Builder(MainActivity.this).create();
+                    noticeDialog.setTitle("Eintrag löschen?");
+                    noticeDialog.setMessage("Möchten Sie den Eintrag " + bookResults.get(viewHolder.getAdapterPosition()).getTitel() + " löschen?");
+                    noticeDialog.setCancelable(true);
+                    noticeDialog.setButton(DialogInterface.BUTTON_POSITIVE, "JA", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            String show = list.remove(viewHolder.getAdapterPosition()).getTitel();
+                            Toast.makeText(MainActivity.this, show, Toast.LENGTH_SHORT).show();
+                            adapter.notifyItemRemoved(viewHolder.getAdapterPosition());
+                            noticeDialog.dismiss();
+                        }
+                    });
+                    noticeDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "NEIN", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            noticeDialog.dismiss();
+                        }
+                    });
+
+                    noticeDialog.show();
+                    return false;
                 }
             });
         }
@@ -231,30 +275,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        private class DownloadImage extends AsyncTask<String, Void, Bitmap> {
-
-            @Override
-            protected Bitmap doInBackground(String... URL) {
-
-                String imageURL = URL[0];
-
-                Bitmap bitmap = null;
-                try {
-                    InputStream input = new java.net.URL(imageURL).openStream();
-                    bitmap = BitmapFactory.decodeStream(input);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return bitmap;
-            }
-
-            @Override
-            protected void onPostExecute(Bitmap result) {
-                // Set the bitmap into ImageView
-                tempImgView.setImageBitmap(result);
-            }
-        }
-
     }
 
     class BookResult{
@@ -262,9 +282,12 @@ public class MainActivity extends AppCompatActivity {
         String author, titel, thumbnail;
 
         public BookResult(String author, String titel, String thumbnail) {
-            this.author = author;
-            this.titel = titel;
-            this.thumbnail = thumbnail;
+            if(author!=null) this.author = author;
+            else this.author = "";
+            if(titel!=null) this.titel = titel;
+            else this.titel = "";
+            if(thumbnail!=null) this.thumbnail = thumbnail;
+            else this.thumbnail = "";
         }
 
         public String getAuthor() {

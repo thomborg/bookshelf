@@ -7,14 +7,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.unipassau.android.bookshelf.R;
-import de.unipassau.android.bookshelf.network.ResultDTO;
 
 /**
  * Artur
  */
 public class DisplayBookActivity extends AppCompatActivity {
 
-    TextView title, subtitle, author, isbn, publishedDate, nrPages;
+    TextView title, subtitle, author, isbn, publishedDate, nrPages, nrPhotos;
     ImageView cover;
 
     @Override
@@ -27,7 +26,7 @@ public class DisplayBookActivity extends AppCompatActivity {
             String bookId = bundle.getString("id");
         }
 
-        setTitle("Artur");
+        setTitle("TITEL");
 
         title = findViewById(R.id.title);
         subtitle = findViewById(R.id.subtitle);
@@ -35,14 +34,16 @@ public class DisplayBookActivity extends AppCompatActivity {
         isbn = findViewById(R.id.isbn);
         publishedDate = findViewById(R.id.publishedDate);
         nrPages = findViewById(R.id.nrPages);
+        nrPhotos = findViewById(R.id.nrPhotos);
         cover = findViewById(R.id.imageView);
 
-        title.setText("Hallo");
-        subtitle.setText("Tschüss");
-        author.setText("Artur");
-        isbn.setText("1234567890");
-        publishedDate.setText("23.03.2019");
-        nrPages.setText("100");
+        title.setText("Titel");
+        subtitle.setText("Subtitel");
+        author.setText("Autor");
+        isbn.setText("ISBN: 93772975738");
+        publishedDate.setText("Herausgegeben am 23.03.2019");
+        nrPages.setText("Seiten: 128");
+        nrPhotos.setText("9 Fotos verfügbar");
 
 
     }
