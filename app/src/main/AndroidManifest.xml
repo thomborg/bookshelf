@@ -4,34 +4,36 @@
     package="de.unipassau.android.bookshelf">
 
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/app_name">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.barcodereader.BarcodeScanActivity">
-
-        </activity>
-        <activity android:name=".ui.PictureGalleryActivity">
-
-        </activity>
-        <activity android:name=".ui.SettingsActivity"
-            android:label="@string/action_settings"/>
-        <activity android:name=".ui.DisplayBookActivity"
-            android:label="@string/app_name"/>
+        <activity android:name=".ui.barcodereader.BarcodeScanActivity" />
+        <activity android:name=".ui.PictureGalleryActivity" />
+        <activity
+            android:name=".ui.SettingsActivity"
+            android:label="@string/action_settings" />
+        <activity
+            android:name=".ui.DisplayBookActivity"
+            android:label="@string/app_name" />
     </application>
 
 </manifest>
+

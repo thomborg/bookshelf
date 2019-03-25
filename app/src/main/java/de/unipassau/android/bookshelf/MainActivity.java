@@ -8,16 +8,16 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,10 +30,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.squareup.picasso.Picasso;
@@ -46,6 +42,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.unipassau.android.bookshelf.model.Book;
+import de.unipassau.android.bookshelf.model.BookListAdapter;
+import de.unipassau.android.bookshelf.model.BookViewModel;
 import de.unipassau.android.bookshelf.network.BookApiClient;
 import de.unipassau.android.bookshelf.network.ResultDTO;
 import de.unipassau.android.bookshelf.ui.DisplayBookActivity;
@@ -55,6 +54,8 @@ import de.unipassau.android.bookshelf.ui.barcodereader.BarcodeScanActivity;
 public class MainActivity extends AppCompatActivity {
     private static final int RC_BARCODE_CAPTURE = 9001;
 
+    private BookViewModel mBookViewModel;
+
     Adapter adapter;
     List<BookResult> list;
     private static final String TAG = "MainActivity";
@@ -63,8 +64,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
+
+        RecyclerView recyclerView = findViewById(R.id.booksRecyclerView);
+        final BookListAdapter adapter = new BookListAdapter(this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        mBookViewModel = ViewModelProviders.of(this).get(BookViewModel.class);
+
+        mBookViewModel.getAllBooks().observe(this, new Observer<List<Book>>() {
+            @Override
+            public void onChanged(List<Book> books) {
+                adapter.setBooks(books);
+            }
+        });
+
+/*
         RecyclerView recyclerView = findViewById(R.id.booksRecyclerView);
         list = new ArrayList<>();
         adapter = new Adapter(list);
@@ -75,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         list.add(new BookResult("Artur", "Hallo", ""));
         list.add(new BookResult("Thomas", "Tschüss", ""));
         adapter.notifyDataSetChanged();
-
+*/
         Spinner shelfSpinner = findViewById(R.id.shelfSpinner);
         List<String> shelfs = new ArrayList<>();
         shelfs.add("Shelf 1");
@@ -181,9 +198,14 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
+
+            Book book_code = new Book(result.getAuthors(), result.getTitle(), result.getIsbn10(), 10, result.getPublishedDate(), result.getPublisher(), result.getThumbnail());
+            mBookViewModel.insert(book_code);
+
+            /*
             list.add(new BookResult(result.getAuthors(), result.getTitle(), result.getThumbnail()));
             adapter.notifyItemChanged(list.size()-1);
-
+            */
             super.onPostExecute(jsonObject);
         }
     }

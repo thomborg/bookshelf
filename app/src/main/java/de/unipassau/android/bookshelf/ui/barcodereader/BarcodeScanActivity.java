@@ -12,10 +12,9 @@ import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import com.google.android.material.snackbar.Snackbar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
@@ -34,6 +33,7 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 
 import java.io.IOException;
 
+import androidx.core.app.ActivityCompat;
 import de.unipassau.android.bookshelf.R;
 import de.unipassau.android.bookshelf.ui.barcodereader.camera.CameraSource;
 import de.unipassau.android.bookshelf.ui.barcodereader.camera.CameraSourcePreview;
@@ -57,8 +57,6 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
     private CameraSource mCameraSource;
     private CameraSourcePreview mPreview;
     private GraphicOverlay<BarcodeGraphic> mGraphicOverlay;
-
-    android.support.v7.widget.Toolbar mTopToolbar;
 
     // helper objects for detecting taps and pinches.
     private ScaleGestureDetector scaleGestureDetector;

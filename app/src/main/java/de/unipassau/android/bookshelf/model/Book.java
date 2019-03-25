@@ -1,15 +1,52 @@
 package de.unipassau.android.bookshelf.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 /**
  * Michi
  */
+
+@Entity
 public class Book {
+    @NonNull
+    @PrimaryKey
+    private String id;
     private String author;
     private String title;
     private String ISBN;
     private int numberOfPages;
     private String publishDate;
     private String publishPlaces;
+    private String urlThumbnail;
+    // private List<BookPicture> bookPictureList;
+
+
+    public Book(String author, String title, String ISBN, int numberOfPages, String publishDate, String publishPlaces, String urlThumbnail) {
+        this.id = UUID.randomUUID().toString();
+        this.author = author;
+        this.title = title;
+        this.ISBN = ISBN;
+        this.numberOfPages = numberOfPages;
+        this.publishDate = publishDate;
+        this.publishPlaces = publishPlaces;
+        this.urlThumbnail = urlThumbnail;
+
+     //    bookPictureList = new ArrayList<>();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getAuthor() {
         return author;
@@ -58,4 +95,22 @@ public class Book {
     public void setPublishPlaces(String publishPlaces) {
         this.publishPlaces = publishPlaces;
     }
+
+    public String getUrlThumbnail() {
+        return urlThumbnail;
+    }
+
+    public void setUrlThumbnail(String urlThumbnail) {
+        this.urlThumbnail = urlThumbnail;
+    }
+
+    /*
+    public List<BookPicture> getBookPictureList() {
+        return bookPictureList;
+    }
+
+    public void setBookPictureList(List<BookPicture> bookPictureList) {
+        this.bookPictureList = bookPictureList;
+    }
+    */
 }

@@ -17,7 +17,7 @@ package de.unipassau.android.bookshelf.ui.barcodereader;
  */
 
 import android.content.Context;
-import android.support.annotation.UiThread;
+import androidx.annotation.UiThread;
 
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.Tracker;

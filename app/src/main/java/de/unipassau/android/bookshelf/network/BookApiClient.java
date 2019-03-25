@@ -59,7 +59,7 @@ public class BookApiClient extends AsyncTask<String, Void, JSONObject> {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        return null;
+        return new JSONObject();
     }
 
 
