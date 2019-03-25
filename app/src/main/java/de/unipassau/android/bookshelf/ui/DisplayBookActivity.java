@@ -56,12 +56,13 @@ public class DisplayBookActivity extends AppCompatActivity {
         cover = findViewById(R.id.imageView);
         nrPictures = findViewById(R.id.nrOfPictures);
 
-        title.setText("Hallo");
-        subtitle.setText("Tschüss");
-        author.setText("Artur");
-        isbn.setText("1234567890");
-        publishedDate.setText("23.03.2019");
-        nrPages.setText("100");
+        title.setText("Titel");
+        subtitle.setText("Subtitel");
+        author.setText("Autor");
+        isbn.setText("ISBN: 93772975738");
+        publishedDate.setText("Herausgegeben am 23.03.2019");
+        nrPages.setText("Seiten: 128");
+        nrPhotos.setText("9 Fotos verfügbar");
         nrPictures.setText(String.valueOf(sampleArrayListNoProductionPls.size()));
 
         FloatingActionButton cameraButton = (FloatingActionButton) findViewById(R.id.take_picture);
