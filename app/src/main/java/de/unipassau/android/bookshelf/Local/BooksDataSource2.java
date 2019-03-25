@@ -36,7 +36,7 @@ public class IBooksDataSource implements BooksDataSource {
 
     @Override
     public void insertBooks(BookDetails... books) {
-            userDAO.insertBooks(books);
+            userDAO.insertBooks();
     }
 
     @Override

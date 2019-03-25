@@ -1,8 +1,11 @@
 package de.unipassau.android.bookshelf.Database;
 
+import android.os.AsyncTask;
+
 import java.util.List;
 
 import de.unipassau.android.bookshelf.Local.IBooksDataSource;
+import de.unipassau.android.bookshelf.Local.UserDAO;
 import de.unipassau.android.bookshelf.model.BookDetails;
 import io.reactivex.Flowable;
 
@@ -53,5 +56,18 @@ public class BooksRepository implements BooksDataSource {
     public void deleteAllBooks() {
         mLocalDataSource.deleteAllBooks();
 
+    }
+    private static class DeleteAllNotesAsyncTask extends AsyncTask<Void, Void, Void> {
+        private UserDAO userDAO;
+
+        private DeleteAllNotesAsyncTask(UserDAO userDAO) {
+            this.userDAO = userDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            userDAO.deleteAllBooks();
+            return null;
+        }
     }
 }

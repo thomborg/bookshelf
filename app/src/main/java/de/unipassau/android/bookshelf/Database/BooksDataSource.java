@@ -22,6 +22,6 @@ public interface BooksDataSource {
     void deleteUser (BookDetails... books);
 
     @Query("Delete from books")
-    void deleteAllBooks();
+    static void deleteAllBooks();
 
 }

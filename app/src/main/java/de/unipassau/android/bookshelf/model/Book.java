@@ -11,6 +11,19 @@ public class Book {
     private String publishDate;
     private String publishPlaces;
 
+    public Book(String author, String title, String ISBN, int numberOfPages, String publishDate, String publishPlaces) {
+        this.author = author;
+        this.title = title;
+        this.ISBN = ISBN;
+        this.numberOfPages = numberOfPages;
+        this.publishDate = publishDate;
+        this.publishPlaces = publishPlaces;
+    }
+
+    public Book(Book book) {
+
+    }
+
     public String getAuthor() {
         return author;
     }

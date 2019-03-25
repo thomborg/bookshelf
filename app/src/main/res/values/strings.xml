@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">bookshelf</string>
+    <string name="app_name">Bookshelf</string>
     <string name="action_settings">Settings</string>
     <string name="textView_1">Hier klicken</string>
     <string name="title_activity_navigation">NavigationActivity</string>
