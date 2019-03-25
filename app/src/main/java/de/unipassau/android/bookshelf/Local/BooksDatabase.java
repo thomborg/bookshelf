@@ -21,6 +21,15 @@ public abstract class BooksDatabase extends RoomDatabase {
 
     private static BooksDatabase mInstance;
 
+    BooksDatabase db =
+            Room.databaseBuilder(getApplicationContext(),
+                    BooksDatabase.class, "database-name").build();
+
+    private Context getApplicationContext() {
+
+        return null;
+    }
+
     public static synchronized BooksDatabase getInstance(Context context) {
         if (mInstance == null) {
             mInstance = Room.databaseBuilder(context, BooksDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
@@ -59,5 +68,6 @@ public abstract class BooksDatabase extends RoomDatabase {
             userDAO.insertBooks(new Book("Fteimi", "Winfo", "92378492", 437, "2010", "Ohio"));
             return null;
         }
+
     }
 }

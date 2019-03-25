@@ -1,5 +1,7 @@
 package de.unipassau.android.bookshelf.model;
 
+import android.graphics.Bitmap;
+
 /**
  * Michi
  */
@@ -18,6 +20,7 @@ public class Book {
         this.numberOfPages = numberOfPages;
         this.publishDate = publishDate;
         this.publishPlaces = publishPlaces;
+
     }
 
     public Book(Book book) {
