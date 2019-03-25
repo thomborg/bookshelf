@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import de.unipassau.android.bookshelf.R;
 import de.unipassau.android.bookshelf.ui.DisplayBookActivity;
@@ -24,6 +27,7 @@ import de.unipassau.android.bookshelf.ui.DisplayBookActivity;
  * Michi
  */
 public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookViewHolder> {
+
 
     class BookViewHolder extends RecyclerView.ViewHolder {
         private final TextView author;
@@ -44,10 +48,13 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     private final Context context;
     private final LayoutInflater mInflater;
     private List<Book> mBooks; // Cached copy of Books
+    BookViewModel bookViewModel;
 
     public BookListAdapter(Context context) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
+        bookViewModel = ViewModelProviders.of((FragmentActivity) context).get(BookViewModel.class);
+
     }
 
     @Override
@@ -75,6 +82,9 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, DisplayBookActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("id", mBooks.get(holder.getAdapterPosition()).getId());
+                i.putExtras(bundle);
                 context.startActivity(i);
             }
         });
@@ -88,8 +98,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
                 noticeDialog.setButton(DialogInterface.BUTTON_POSITIVE, "JA", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String show = mBooks.remove(holder.getAdapterPosition()).getTitle();
-                        Toast.makeText(context, show, Toast.LENGTH_SHORT).show();
+                        bookViewModel.delete(mBooks.get(holder.getAdapterPosition()));
                         notifyItemRemoved(holder.getAdapterPosition());
                         noticeDialog.dismiss();
                     }

@@ -27,4 +27,12 @@ public class BookViewModel extends AndroidViewModel {
     public void insert(Book book) {
         mRepository.insert(book);
     }
+
+    public void delete(Book book){
+        mRepository.delete(book);
+    }
+
+    public Book findBookById(String id){
+        return mRepository.findBookById(id);
+    }
 }

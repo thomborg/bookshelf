@@ -3,6 +3,15 @@ package de.unipassau.android.bookshelf.network;
 public class ResultDTO {
     private String title, subtitle, publisher, publishedDate, isbn10, authors,
             thumbnail;
+    private int pages;
+
+    public int getPages() {
+        return pages;
+    }
+
+    public void setPages(int pages) {
+        this.pages = pages;
+    }
 
     public String getThumbnail() {
         return thumbnail;

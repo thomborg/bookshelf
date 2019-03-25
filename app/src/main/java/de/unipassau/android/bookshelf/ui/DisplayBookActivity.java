@@ -10,11 +10,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProviders;
 import de.unipassau.android.bookshelf.R;
+import de.unipassau.android.bookshelf.database.BookDAO;
+import de.unipassau.android.bookshelf.model.Book;
 import de.unipassau.android.bookshelf.model.BookPicture;
+import de.unipassau.android.bookshelf.model.BookViewModel;
 
 /**
  * Artur
@@ -27,6 +35,7 @@ public class DisplayBookActivity extends AppCompatActivity {
 
     TextView title, subtitle, author, isbn, publishedDate, nrPages, nrPictures;
     ImageView cover;
+    BookViewModel bookViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,13 +44,17 @@ public class DisplayBookActivity extends AppCompatActivity {
 
         sampleArrayListNoProductionPls = new ArrayList<BookPicture>();
 
+        bookViewModel = ViewModelProviders.of(this).get(BookViewModel.class);
 
         Bundle bundle = getIntent().getExtras();
+        String bookId = "";
         if (bundle != null) {
-            String bookId = bundle.getString("id");
+            bookId = bundle.getString("id");
         }
 
-        setTitle("Artur");
+        Book book = bookViewModel.findBookById(bookId);
+
+        setTitle(book.getTitle());
 
         title = findViewById(R.id.title);
         subtitle = findViewById(R.id.subtitle);
@@ -52,14 +65,14 @@ public class DisplayBookActivity extends AppCompatActivity {
         cover = findViewById(R.id.imageView);
         nrPictures = findViewById(R.id.nrOfPictures);
 
-        title.setText("Titel");
-        subtitle.setText("Subtitel");
-        author.setText("Autor");
-        isbn.setText("ISBN: 93772975738");
-        publishedDate.setText("Herausgegeben am 23.03.2019");
-        nrPages.setText("Seiten: 128");
+        title.setText(book.getTitle());
+        //subtitle.setText("");
+        author.setText(book.getAuthor());
+        isbn.setText(book.getISBN());
+        publishedDate.setText(book.getPublishDate());
+        nrPages.setText(String.valueOf(book.getNumberOfPages()));
         nrPictures.setText("9 Fotos verfügbar");
-        nrPictures.setText(String.valueOf(sampleArrayListNoProductionPls.size()));
+        //nrPictures.setText(String.valueOf(sampleArrayListNoProductionPls.size()));
 
         FloatingActionButton cameraButton = (FloatingActionButton) findViewById(R.id.take_picture);
         cameraButton.setOnClickListener(new View.OnClickListener() {
@@ -89,6 +102,14 @@ public class DisplayBookActivity extends AppCompatActivity {
             sampleArrayListNoProductionPls.add(bookPicture);
 
         }
+    }
+
+    public void viewGallery(View v){
+        Toast.makeText(this, "View Gallery", Toast.LENGTH_SHORT).show();
+    }
+
+    public void refreshLocation(View v){
+        Toast.makeText(this, "Refresh Location", Toast.LENGTH_SHORT).show();
     }
 
 

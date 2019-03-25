@@ -55,8 +55,8 @@ public abstract class BookshelfDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(final Void... params) {
-            mDao.deleteAllBooks();
-            Book book1 = new Book("Franz Lehner", "Einführung in die Wirtschaftsinformatik", "97123849003", 450, "03.2.10", "München", "");
+            //mDao.deleteAllBooks();
+            Book book1 = new Book("Franz Lehner", "Einführung in die Wirtschaftsinformatik", "97123849003", 450, "03.2.10", "");
             mDao.insertOnlySingleBook(book1);
             return null;
         }
