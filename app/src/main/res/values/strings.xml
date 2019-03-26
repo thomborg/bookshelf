@@ -8,4 +8,7 @@
     <string name="flash">Flash</string>
     <string name="barcode_scanner_tooltip">Tap to capture. Pinch/Stretch to zoom</string>
     <string name="shelf">Shelfs:</string>
+    <string name="number_of_pictures">Number of Pictures</string>
+    <string name="permission_storage_rationale">Grant permission for storage access</string>
+    <string name="image">Image</string>
 </resources>

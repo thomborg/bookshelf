@@ -2,11 +2,6 @@ package de.unipassau.android.bookshelf;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.media.Image;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -18,7 +13,7 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +34,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +48,6 @@ import de.unipassau.android.bookshelf.ui.barcodereader.BarcodeScanActivity;
 
 public class MainActivity extends AppCompatActivity {
     private static final int RC_BARCODE_CAPTURE = 9001;
-
     private BookViewModel mBookViewModel;
 
     Adapter adapter;
@@ -64,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+
+
 
 
         RecyclerView recyclerView = findViewById(R.id.booksRecyclerView);
@@ -136,6 +129,8 @@ public class MainActivity extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

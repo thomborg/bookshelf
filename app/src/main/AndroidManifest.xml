@@ -17,22 +17,35 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="de.unipassau.android.bookshelf.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"></meta-data>
+        </provider>
+
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".ui.barcodereader.BarcodeScanActivity" />
-        <activity android:name=".ui.PictureGalleryActivity" />
+        <activity android:name=".ui.gallery.PictureGalleryActivity" />
         <activity
             android:name=".ui.SettingsActivity"
             android:label="@string/action_settings" />
         <activity
             android:name=".ui.DisplayBookActivity"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".ui.gallery.ShowPictureFullScreenActivity"
             android:label="@string/app_name" />
     </application>
 

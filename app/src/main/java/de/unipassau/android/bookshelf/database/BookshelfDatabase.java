@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import de.unipassau.android.bookshelf.model.Book;
 import de.unipassau.android.bookshelf.ui.gallery.BookPicture;
 
-@Database(entities = {Book.class, BookPicture.class}, version = 1, exportSchema = false)
+@Database(entities = {Book.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})
 public abstract class BookshelfDatabase extends RoomDatabase {
    public abstract BookDAO daoAccess() ;

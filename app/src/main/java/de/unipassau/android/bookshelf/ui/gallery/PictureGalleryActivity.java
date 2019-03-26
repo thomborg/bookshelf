@@ -1,5 +1,6 @@
-package de.unipassau.android.bookshelf.ui;
+package de.unipassau.android.bookshelf.ui.gallery;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -13,43 +14,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.unipassau.android.bookshelf.R;
-import de.unipassau.android.bookshelf.ui.gallery.BookPicture;
 import de.unipassau.android.bookshelf.model.BookPictureAdapter;
+import de.unipassau.android.bookshelf.ui.DisplayBookActivity;
 
 public class PictureGalleryActivity extends AppCompatActivity {
-        static List<BookPicture>bookPictureList;
+        private String storagePath;
+        private List<BookPicture>bookPictureList;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_picture_gallery);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.picturegallary);
+        Intent intent = getIntent();
+
+        storagePath = intent.getStringExtra(DisplayBookActivity.PICTURE_STORAGE_PATH);
+
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.picturegallery);
         recyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
 
-        String bookId = "test";
 
 
         bookPictureList = new ArrayList<>();
-        loadBookPicture(bookId);
+        loadBookPictures();
 
-        BookPictureAdapter bookPictureAdapter = new BookPictureAdapter(getApplicationContext(), bookPictureList);
-
-
-
+        BookPictureAdapter bookPictureAdapter = new BookPictureAdapter(bookPictureList);
+        recyclerView.setAdapter(bookPictureAdapter);
 
     }
 
 
-    private void loadBookPicture(String bookId) {
-        List<BookPicture> bookPictures = new ArrayList<>();
-        String dirPath = bookId;
+    private void loadBookPictures() {
 
-        File dataDir = new File(android.os.Environment.getDataDirectory(), dirPath);
+        File dataDir = new File(storagePath);
         if (dataDir.isDirectory()) {
             File[] fileList = dataDir.listFiles();
 
