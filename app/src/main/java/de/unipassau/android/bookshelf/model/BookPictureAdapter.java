@@ -8,16 +8,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import de.unipassau.android.bookshelf.R;
+import de.unipassau.android.bookshelf.ui.gallery.BookPicture;
 
 public class BookPictureAdapter extends RecyclerView.Adapter<BookPictureAdapter.ViewHolder> {
 
-    private ArrayList<BookPicture> galleryList;
+    private List<BookPicture> galleryList;
     private Context context;
 
-    public BookPictureAdapter(Context context, ArrayList<BookPicture> galleryList) {
+    public BookPictureAdapter(Context context, List<BookPicture> galleryList) {
         this.galleryList = galleryList;
         this.context = context;
     }

@@ -16,7 +16,7 @@ public interface BookDAO {
     void insertOnlySingleBook (Book book);
 
     @Insert
-    void insertMultipleMovies (List<Book> bookList);
+    void insertMultipleBooks (List<Book> bookList);
 
     @Query("SELECT * FROM Book")
     LiveData<List<Book>> fetchAllBooks();
@@ -25,6 +25,7 @@ public interface BookDAO {
     Book fetchOneBookById (int bookId);
     @Update
     void updateBook (Book book);
+
     @Delete
     void deleteBook (Book book);
 

@@ -6,8 +6,6 @@ import android.os.AsyncTask;
 import java.util.List;
 
 import androidx.lifecycle.LiveData;
-import de.unipassau.android.bookshelf.database.BookDAO;
-import de.unipassau.android.bookshelf.database.BookshelfDatabase;
 import de.unipassau.android.bookshelf.model.Book;
 
 public class BookshelfRepository {

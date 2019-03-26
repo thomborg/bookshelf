@@ -1,12 +1,14 @@
 package de.unipassau.android.bookshelf.model;
 
-import java.util.ArrayList;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
 
 /**
  * Michi
@@ -24,7 +26,8 @@ public class Book {
     private String publishDate;
     private String publishPlaces;
     private String urlThumbnail;
-    // private List<BookPicture> bookPictureList;
+    private Date creationDate;
+
 
 
     public Book(String author, String title, String ISBN, int numberOfPages, String publishDate, String publishPlaces, String urlThumbnail) {
@@ -36,6 +39,7 @@ public class Book {
         this.publishDate = publishDate;
         this.publishPlaces = publishPlaces;
         this.urlThumbnail = urlThumbnail;
+        this.creationDate = new Date(Instant.now().toEpochMilli());
 
      //    bookPictureList = new ArrayList<>();
     }
@@ -104,13 +108,11 @@ public class Book {
         this.urlThumbnail = urlThumbnail;
     }
 
-    /*
-    public List<BookPicture> getBookPictureList() {
-        return bookPictureList;
+    public Date getCreationDate() {
+        return creationDate;
     }
 
-    public void setBookPictureList(List<BookPicture> bookPictureList) {
-        this.bookPictureList = bookPictureList;
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
     }
-    */
 }
