@@ -15,6 +15,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -69,8 +70,10 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.booksRecyclerView);
         final BookListAdapter adapter = new BookListAdapter(this);
+        LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(llm);
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, llm.getOrientation()));
 
         mBookViewModel = ViewModelProviders.of(this).get(BookViewModel.class);
 
@@ -181,6 +184,8 @@ public class MainActivity extends AppCompatActivity {
                         result.setPublishedDate(info.getString("publishedDate"));
                     if (info.has("imageLinks"))
                         result.setThumbnail(info.getJSONObject("imageLinks").getString("thumbnail"));
+                    if(info.has("pageCount"))
+                        result.setPages(info.getInt("pageCount"));
                     StringBuilder authors = new StringBuilder();
                     JSONArray authorArray;
                     if (info.has("authors")) {
@@ -199,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-            Book book_code = new Book(result.getAuthors(), result.getTitle(), result.getIsbn10(), 10, result.getPublishedDate(), result.getPublisher(), result.getThumbnail());
+            Book book_code = new Book(result.getAuthors(), result.getTitle(), result.getIsbn10(), result.getPages(), result.getPublishedDate(), result.getThumbnail());
             mBookViewModel.insert(book_code);
 
             /*

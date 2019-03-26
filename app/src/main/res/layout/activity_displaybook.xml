@@ -87,9 +87,39 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/display_book_margin"
         android:textSize="@dimen/display_book_textsize"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/nrOfPicturesButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/publishedDate" />
+        app:layout_constraintTop_toBottomOf="@id/nrPages" />
+
+    <ImageButton
+        android:id="@+id/nrOfPicturesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_photo_library_black_24dp"
+        android:onClick="viewGallery"
+        app:layout_constraintStart_toEndOf="@id/nrOfPictures"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/publishedDate"/>
+
+    <TextView
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/display_book_margin"
+        android:textSize="@dimen/display_book_textsize"
+        app:layout_constraintEnd_toStartOf="@id/locationButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nrOfPictures" />
+
+    <ImageButton
+        android:id="@+id/locationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_refresh_black_24dp"
+        android:onClick="refreshLocation"
+        app:layout_constraintStart_toEndOf="@id/location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nrOfPictures"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/take_picture"

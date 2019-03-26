@@ -24,20 +24,18 @@ public class Book {
     private String ISBN;
     private int numberOfPages;
     private String publishDate;
-    private String publishPlaces;
     private String urlThumbnail;
     private Date creationDate;
 
 
 
-    public Book(String author, String title, String ISBN, int numberOfPages, String publishDate, String publishPlaces, String urlThumbnail) {
+    public Book(String author, String title, String ISBN, int numberOfPages, String publishDate, String urlThumbnail) {
         this.id = UUID.randomUUID().toString();
         this.author = author;
         this.title = title;
         this.ISBN = ISBN;
         this.numberOfPages = numberOfPages;
         this.publishDate = publishDate;
-        this.publishPlaces = publishPlaces;
         this.urlThumbnail = urlThumbnail;
         this.creationDate = new Date(Instant.now().toEpochMilli());
 
@@ -90,14 +88,6 @@ public class Book {
 
     public void setPublishDate(String publishDate) {
         this.publishDate = publishDate;
-    }
-
-    public String getPublishPlaces() {
-        return publishPlaces;
-    }
-
-    public void setPublishPlaces(String publishPlaces) {
-        this.publishPlaces = publishPlaces;
     }
 
     public String getUrlThumbnail() {

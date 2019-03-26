@@ -22,7 +22,7 @@ public interface BookDAO {
     LiveData<List<Book>> fetchAllBooks();
 
     @Query("SELECT * FROM Book WHERE id = :bookId")
-    Book fetchOneBookById (int bookId);
+    Book fetchOneBookById (String bookId);
     @Update
     void updateBook (Book book);
 
