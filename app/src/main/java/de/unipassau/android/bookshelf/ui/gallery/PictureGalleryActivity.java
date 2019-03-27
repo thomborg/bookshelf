@@ -3,6 +3,7 @@ package de.unipassau.android.bookshelf.ui.gallery;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.unipassau.android.bookshelf.R;
+import de.unipassau.android.bookshelf.model.BookPicture;
 import de.unipassau.android.bookshelf.model.BookPictureAdapter;
 import de.unipassau.android.bookshelf.ui.DisplayBookActivity;
 
@@ -38,15 +40,13 @@ public class PictureGalleryActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
 
-
-
         bookPictureList = new ArrayList<>();
         loadBookPictures();
-
         BookPictureAdapter bookPictureAdapter = new BookPictureAdapter(bookPictureList);
         recyclerView.setAdapter(bookPictureAdapter);
 
     }
+
 
 
     private void loadBookPictures() {
@@ -55,9 +55,9 @@ public class PictureGalleryActivity extends AppCompatActivity {
         if (dataDir.isDirectory()) {
             File[] fileList = dataDir.listFiles();
 
-            for (File file : fileList) {
-                Bitmap imageBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                bookPictureList.add(new BookPicture(file.getPath(), imageBitmap));
+            for (final File file : fileList) {
+                        Bitmap imageBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                        bookPictureList.add(new BookPicture(file.getPath(), imageBitmap));
             }
         }
 

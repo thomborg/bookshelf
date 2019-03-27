@@ -10,7 +10,6 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import de.unipassau.android.bookshelf.model.Book;
-import de.unipassau.android.bookshelf.ui.gallery.BookPicture;
 
 @Database(entities = {Book.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})

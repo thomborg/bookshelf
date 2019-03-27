@@ -20,7 +20,6 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import de.unipassau.android.bookshelf.R;
-import de.unipassau.android.bookshelf.ui.gallery.BookPicture;
 import de.unipassau.android.bookshelf.ui.gallery.ShowPictureFullScreenActivity;
 
 public class BookPictureAdapter extends RecyclerView.Adapter<BookPictureAdapter.ViewHolder> {
@@ -41,7 +40,7 @@ public class BookPictureAdapter extends RecyclerView.Adapter<BookPictureAdapter.
     public void onBindViewHolder(final BookPictureAdapter.ViewHolder viewHolder, int i) {
         final BookPicture bookPicture = galleryList.get(i);
         viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        viewHolder.img.setImageBitmap(bookPicture.getImageBitmap());
+        viewHolder.img.setImageBitmap(bookPicture.getImageThumbnail());
 
         viewHolder.img.setOnClickListener(new View.OnClickListener() {
             @Override
