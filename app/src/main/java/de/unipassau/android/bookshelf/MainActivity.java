@@ -259,12 +259,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-
-
-            /*
-            list.add(new BookResult(result.getAuthors(), result.getTitle(), result.getThumbnail()));
-            adapter.notifyItemChanged(list.size()-1);
-            */
             super.onPostExecute(jsonObject);
         }
     }

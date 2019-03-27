@@ -5,14 +5,20 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import androidx.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -23,6 +29,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.IOException;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -121,6 +128,17 @@ public class DisplayBookActivity extends AppCompatActivity {
             }
         });
 
+        snackbar = Snackbar.make(findViewById(android.R.id.content), "Ihr Buch steht noch in keinem Regal!", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Eintragen", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        changeShelf(view);
+                    }
+                })
+                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ));
+        if(shelf.getText().toString().isEmpty())
+            snackbar.show();
+
     }
 
     /**
@@ -149,17 +167,6 @@ public class DisplayBookActivity extends AppCompatActivity {
 
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, REQUEST_IMAGE_CAPTURE);
         }
-
-        snackbar = Snackbar.make(findViewById(android.R.id.content), "Ihr Buch steht noch in keinem Regal!", Snackbar.LENGTH_INDEFINITE)
-                .setAction("Eintragen", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        changeShelf(view);
-                    }
-                })
-                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ));
-        if(shelf.getText().toString().isEmpty())
-            snackbar.show();
     }
 
 
