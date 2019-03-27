@@ -9,15 +9,20 @@
         android:id="@+id/cover"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/author"
         />
 
     <TextView
         android:id="@+id/author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/title"
         app:layout_constraintStart_toEndOf="@id/cover"
@@ -27,17 +32,22 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:textStyle="normal"
+        android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/author"
-        app:layout_constraintBottom_toTopOf="@id/subtitle"
+        app:layout_constraintBottom_toTopOf="@id/nrPictures"
         app:layout_constraintStart_toEndOf="@id/cover"
         />
 
     <TextView
-        android:id="@+id/subtitle"
+        android:id="@+id/nrPictures"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:textStyle="italic"
+        android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/cover"
         />
 

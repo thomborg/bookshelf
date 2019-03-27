@@ -23,6 +23,7 @@ public class Book {
     private int numberOfPages;
     private String publishDate;
     private String urlThumbnail;
+    private String shelf;
     // private List<BookPicture> bookPictureList;
 
 
@@ -36,6 +37,14 @@ public class Book {
         this.urlThumbnail = urlThumbnail;
 
      //    bookPictureList = new ArrayList<>();
+    }
+
+    public String getShelf() {
+        return shelf;
+    }
+
+    public void setShelf(String shelf) {
+        this.shelf = shelf;
     }
 
     public String getId() {

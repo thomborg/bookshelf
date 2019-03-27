@@ -23,12 +23,23 @@ public interface BookDAO {
 
     @Query("SELECT * FROM Book WHERE id = :bookId")
     Book fetchOneBookById (String bookId);
+
+    @Query("SELECT * FROM Book WHERE shelf = :shelf")
+    LiveData<List<Book>> getBooksWithShelf (String shelf);
+
     @Update
     void updateBook (Book book);
+
     @Delete
     void deleteBook (Book book);
 
     @Query("DELETE FROM Book")
     void deleteAllBooks ();
+
+    @Query("UPDATE Book SET shelf = :shelf WHERE id = :bookId")
+    void setShelfofBook(String bookId, String shelf);
+
+    @Query("SELECT DISTINCT shelf FROM Book WHERE shelf IS NOT NULL")
+    String[] selectAllShelfs();
 }
 

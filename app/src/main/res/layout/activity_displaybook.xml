@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,116 +9,232 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/ic_library_books_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/title"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView"
-        app:layout_constraintBottom_toTopOf="@id/subtitle"
+        android:text="Titel"
+        android:textSize="18sp"
         android:textStyle="bold"
-        android:textSize="18sp"/>
+        app:layout_constraintBottom_toTopOf="@id/author"
+        app:layout_constraintStart_toEndOf="@id/barrier2"
+        app:layout_constraintTop_toBottomOf="@id/imageView" />
 
     <TextView
-        android:id="@+id/subtitle"
+        android:id="@+id/textViewAuthor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintBottom_toTopOf="@id/author"
-        android:textStyle="italic"
-        android:textSize="14sp"/>
+        android:text="@string/author"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/author"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/subtitle"
-        app:layout_constraintBottom_toTopOf="@id/isbn"
+        android:layout_margin="@dimen/display_book_margin"
+        android:text="Author"
         android:textSize="@dimen/display_book_textsize"
-        android:layout_margin="@dimen/display_book_margin"/>
+        app:layout_constraintBottom_toTopOf="@id/isbn"
+        app:layout_constraintStart_toEndOf="@id/barrier2"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+
+    <TextView
+        android:id="@+id/textViewISBN"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/isbn"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/isbn"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/isbn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/author"
-        app:layout_constraintBottom_toTopOf="@id/publishedDate"
+        android:layout_margin="@dimen/display_book_margin"
+        android:text="ISBN"
         android:textSize="@dimen/display_book_textsize"
-        android:layout_margin="@dimen/display_book_margin"/>
+        app:layout_constraintBottom_toTopOf="@id/publishedDate"
+        app:layout_constraintStart_toEndOf="@id/barrier2"
+        app:layout_constraintTop_toBottomOf="@id/author" />
+
+    <TextView
+        android:id="@+id/textViewPublDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/publishedDate"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/publishedDate"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/publishedDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/isbn"
-        app:layout_constraintBottom_toTopOf="@id/nrPages"
+        android:layout_margin="@dimen/display_book_margin"
+        android:text="Date"
         android:textSize="@dimen/display_book_textsize"
-        android:layout_margin="@dimen/display_book_margin"/>
+        app:layout_constraintBottom_toTopOf="@id/nrPages"
+        app:layout_constraintStart_toEndOf="@id/barrier2"
+        app:layout_constraintTop_toBottomOf="@id/isbn" />
+
+    <TextView
+        android:id="@+id/textViewNrPages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nrPages"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/nrPages"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/nrPages"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/publishedDate"
+        android:layout_margin="@dimen/display_book_margin"
+        android:text="#Page"
         android:textSize="@dimen/display_book_textsize"
-        android:layout_margin="@dimen/display_book_margin"/>
+        app:layout_constraintStart_toEndOf="@id/barrier2"
+        app:layout_constraintTop_toBottomOf="@id/publishedDate" />
 
     <TextView
-        android:id="@+id/nrOfPictures"
+        android:id="@+id/textViewLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/display_book_margin"
-        android:textSize="@dimen/display_book_textsize"
-        app:layout_constraintEnd_toStartOf="@id/nrOfPicturesButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nrPages" />
-
-    <ImageButton
-        android:id="@+id/nrOfPicturesButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_photo_library_black_24dp"
-        android:onClick="viewGallery"
-        app:layout_constraintStart_toEndOf="@id/nrOfPictures"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/publishedDate"/>
+        android:text="@string/location"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/location"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/display_book_margin"
+        android:text="Location"
         android:textSize="@dimen/display_book_textsize"
-        app:layout_constraintEnd_toStartOf="@id/locationButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nrOfPictures" />
+        app:layout_constraintStart_toEndOf="@id/barrier2"
+        app:layout_constraintTop_toBottomOf="@id/nrPages" />
 
     <ImageButton
         android:id="@+id/locationButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_refresh_black_24dp"
+        android:layout_marginStart="8dp"
         android:onClick="refreshLocation"
+        android:src="@drawable/ic_add_location_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/location"
         app:layout_constraintStart_toEndOf="@id/location"
+        app:layout_constraintTop_toTopOf="@id/location" />
+
+    <TextView
+        android:id="@+id/textViewShelf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/shelf"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBaseline_toBaselineOf="@id/shelf"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/shelf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/display_book_margin"
+        android:text="Shelf"
+        android:textSize="@dimen/display_book_textsize"
+        app:layout_constraintStart_toEndOf="@id/barrier2"
+        app:layout_constraintTop_toBottomOf="@id/location" />
+
+    <ImageButton
+        android:id="@+id/shelfButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:onClick="changeShelf"
+        android:src="@drawable/ic_settings_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/shelf"
+        app:layout_constraintStart_toEndOf="@id/shelf"
+        app:layout_constraintTop_toTopOf="@id/shelf" />
+
+    <ImageButton
+        android:id="@+id/shelfAddButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:onClick="addShelf"
+        android:src="@drawable/ic_add_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/shelf"
+        app:layout_constraintStart_toEndOf="@id/shelfButton"
+        app:layout_constraintTop_toTopOf="@id/shelf" />
+
+    <TextView
+        android:id="@+id/textViewNrPics1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nrPictures1"
+        app:layout_constraintBaseline_toBaselineOf="@id/nrOfPictures"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/nrOfPictures"/>
+
+    <TextView
+        android:id="@+id/nrOfPictures"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/display_book_margin"
+        android:text="#Pics"
+        android:textSize="@dimen/display_book_textsize"
+        app:layout_constraintStart_toEndOf="@id/textViewNrPics1"
+        app:layout_constraintEnd_toStartOf="@id/textViewNrPics2"
+        app:layout_constraintTop_toBottomOf="@id/shelf" />
+
+    <TextView
+        android:id="@+id/textViewNrPics2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nrPictures2"
+        app:layout_constraintBaseline_toBaselineOf="@id/nrOfPictures"
+        app:layout_constraintStart_toEndOf="@id/nrOfPictures"
+        app:layout_constraintEnd_toStartOf="@id/nrOfPicturesButton"/>
+
+    <ImageButton
+        android:id="@+id/nrOfPicturesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:onClick="viewGallery"
+        android:src="@drawable/ic_photo_library_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@id/nrOfPictures"
+        app:layout_constraintStart_toEndOf="@id/textViewNrPics2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/nrOfPictures"/>
+        app:layout_constraintTop_toTopOf="@id/nrOfPictures" />
+
+    <NumberPicker
+        android:id="@+id/shelfPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nrOfPictures"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/take_picture"
@@ -130,5 +245,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_add_a_photo_black_24dp" />
 
-    <!--  -->
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="right"
+        app:constraint_referenced_ids="textViewShelf,textViewPublDate,textViewISBN,textViewTitle,textViewNrPages,textViewAuthor,textViewLocation"
+        />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

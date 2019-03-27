@@ -35,4 +35,16 @@ public class BookViewModel extends AndroidViewModel {
     public Book findBookById(String id){
         return mRepository.findBookById(id);
     }
+
+    public String[] getAllShelfs(){
+        return mRepository.getAllShelfs();
+    }
+
+    public void setShelf(String bookId, String shelf){
+        mRepository.setShelfofBook(bookId, shelf);
+    }
+
+    public LiveData<List<Book>> getBooksWithShelf(String shelf){
+        return mRepository.getBooksWithShelf(shelf);
+    }
 }

@@ -7,5 +7,15 @@
     <string name="auto_focus">Auto Focus</string>
     <string name="flash">Flash</string>
     <string name="barcode_scanner_tooltip">Tap to capture. Pinch/Stretch to zoom</string>
-    <string name="shelf">Shelfs:</string>
+    <string name="shelfs">Regale:</string>
+    <string name="title">Titel:</string>
+    <string name="author">Autor(en):</string>
+    <string name="isbn">ISBN:</string>
+    <string name="publishedDate">Herausgegeben:</string>
+    <string name="nrPages">Seitenzahl:</string>
+    <string name="nrPictures1">Es sind</string>
+    <string name="nrPictures2">Fotos verfügbar:</string>
+    <string name="location">Aktueller Ort:</string>
+    <string name="shelf">Regal:</string>
+
 </resources>
