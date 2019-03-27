@@ -37,9 +37,6 @@ public class Book {
         this.numberOfPages = numberOfPages;
         this.publishDate = publishDate;
         this.urlThumbnail = urlThumbnail;
-        this.creationDate = new Date(Instant.now().toEpochMilli());
-
-     //    bookPictureList = new ArrayList<>();
     }
 
     public String getId() {

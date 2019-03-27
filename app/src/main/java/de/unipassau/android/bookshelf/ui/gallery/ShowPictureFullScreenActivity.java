@@ -36,7 +36,7 @@ public class ShowPictureFullScreenActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         photoView.setAdjustViewBounds(false);
-        photoView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        photoView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
     }
 }

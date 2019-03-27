@@ -42,6 +42,7 @@ public class BookPictureAdapter extends RecyclerView.Adapter<BookPictureAdapter.
         final BookPicture bookPicture = galleryList.get(i);
         viewHolder.img.setScaleType(ImageView.ScaleType.CENTER_CROP);
         viewHolder.img.setImageBitmap(bookPicture.getImageBitmap());
+
         viewHolder.img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +77,7 @@ public class BookPictureAdapter extends RecyclerView.Adapter<BookPictureAdapter.
                             }
                         });
                         noticeDialog.show();
-                        return false;
+                        return true;
                     }
 
         });
