@@ -43,11 +43,12 @@ public class DisplayBookActivity extends AppCompatActivity {
     private ArrayList<BookPicture> sampleArrayListNoProductionPls;
 
 
-    TextView title, subtitle, author, isbn, publishedDate, nrPages, nrPictures, shelf;
+    TextView title, author, isbn, publishedDate, nrPages, nrPictures, shelf;
     ImageView cover;
     NumberPicker picker;
     BookViewModel bookViewModel;
     Book book;
+    Snackbar snackbar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,16 +105,16 @@ public class DisplayBookActivity extends AppCompatActivity {
             }
         });
 
+        snackbar = Snackbar.make(findViewById(android.R.id.content), "Ihr Buch steht noch in keinem Regal!", Snackbar.LENGTH_INDEFINITE)
+                .setAction("Eintragen", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        changeShelf(view);
+                    }
+                })
+                .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ));
         if(shelf.getText().toString().isEmpty())
-            Snackbar.make(findViewById(android.R.id.content), "Ihr Buch steht noch in keinem Regal!", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Eintragen", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            changeShelf(view);
-                        }
-                    })
-                    .setActionTextColor(getResources().getColor(android.R.color.holo_red_light ))
-                    .show();
+            snackbar.show();
     }
 
 
@@ -145,13 +146,18 @@ public class DisplayBookActivity extends AppCompatActivity {
     }
 
     public void changeShelf(View v){
-        //Toast.makeText(this, "Change Shlef", Toast.LENGTH_SHORT).show();
+        snackbar.dismiss();
         if(picker.getVisibility()==View.VISIBLE)
             picker.setVisibility(View.GONE);
         else {
             picker.setVisibility(View.VISIBLE);
 
             final String[] shelfs = bookViewModel.getAllShelfs();
+
+            if(shelfs.length==1) {
+                bookViewModel.setShelf(book.getId(), shelfs[0]);
+                shelf.setText(shelfs[0]);
+            }
 
             picker = findViewById(R.id.shelfPicker);
             picker.setMinValue(0);
@@ -171,6 +177,8 @@ public class DisplayBookActivity extends AppCompatActivity {
     }
 
     public void addShelf(View v){
+        snackbar.dismiss();
+
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
