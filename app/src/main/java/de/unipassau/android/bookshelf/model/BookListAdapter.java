@@ -31,14 +31,17 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     class BookViewHolder extends RecyclerView.ViewHolder {
         private final TextView author;
         private final TextView title;
+        private final TextView nrPics;
         private final ImageView cover;
         private final ConstraintLayout layout;
+
 
 
         private BookViewHolder(View itemView) {
             super(itemView);
             author = itemView.findViewById(R.id.author);
             title = itemView.findViewById(R.id.title);
+            nrPics = itemView.findViewById(R.id.nrPictures);
             cover = itemView.findViewById(R.id.cover);
             layout = itemView.findViewById(R.id.book_item_layout);
         }
@@ -47,13 +50,12 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     private final Context context;
     private final LayoutInflater mInflater;
     private List<Book> mBooks; // Cached copy of Books
-    BookViewModel bookViewModel;
+    private BookViewModel bookViewModel;
 
     public BookListAdapter(Context context) {
         this.context = context;
         mInflater = LayoutInflater.from(context);
         bookViewModel = ViewModelProviders.of((FragmentActivity) context).get(BookViewModel.class);
-
     }
 
     @Override
@@ -66,7 +68,8 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     public void onBindViewHolder(final BookViewHolder holder, int i) {
         holder.title.setText(mBooks.get(i).getTitle());
         holder.author.setText(mBooks.get(i).getAuthor());
-        if(!mBooks.get(i).getUrlThumbnail().isEmpty()){
+        holder.nrPics.setText(String.valueOf(mBooks.get(i).getNumberOfPages())); //TODO auf number of photos ändern
+        if(mBooks.get(i).getUrlThumbnail()!=null && !mBooks.get(i).getUrlThumbnail().isEmpty()){
             Picasso.get().load(mBooks.get(i).getUrlThumbnail())
                     .placeholder(R.drawable.ic_launcher_foreground)
                     .error(R.drawable.ic_flash_off) //TODO richtige drawables
@@ -76,7 +79,6 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
             holder.cover.setImageResource(R.drawable.ic_library_books_black_24dp); //TODO hier auch
         }
 
-        //TODO richtigen Eintrag bei Click ansprechen
         holder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

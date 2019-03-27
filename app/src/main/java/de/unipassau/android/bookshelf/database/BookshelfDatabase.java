@@ -60,6 +60,7 @@ public abstract class BookshelfDatabase extends RoomDatabase {
             //mDao.deleteAllBooks();
             Book book1 = new Book("Franz Lehner", "Einführung in die Wirtschaftsinformatik", "97123849003", 450, "03.2.10", "");
             mDao.insertOnlySingleBook(book1);
+            mDao.setShelfofBook(book1.getId(), "WINFO");
             return null;
         }
     }

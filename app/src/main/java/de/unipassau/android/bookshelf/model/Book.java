@@ -1,14 +1,10 @@
 package de.unipassau.android.bookshelf.model;
 
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
 
 /**
  * Michi
@@ -25,8 +21,7 @@ public class Book {
     private int numberOfPages;
     private String publishDate;
     private String urlThumbnail;
-    private Date creationDate;
-
+    private String shelf;
 
 
     public Book(String author, String title, String ISBN, int numberOfPages, String publishDate, String urlThumbnail) {
@@ -37,6 +32,14 @@ public class Book {
         this.numberOfPages = numberOfPages;
         this.publishDate = publishDate;
         this.urlThumbnail = urlThumbnail;
+    }
+
+    public String getShelf() {
+        return shelf;
+    }
+
+    public void setShelf(String shelf) {
+        this.shelf = shelf;
     }
 
     public String getId() {
@@ -95,11 +98,4 @@ public class Book {
         this.urlThumbnail = urlThumbnail;
     }
 
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
 }

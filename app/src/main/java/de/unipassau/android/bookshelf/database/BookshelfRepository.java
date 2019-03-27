@@ -43,6 +43,26 @@ public class BookshelfRepository {
         }
     }
 
+    public void setShelfofBook(String bookId, String shelf){
+        new setShelfofBookAsyncTask(bookDAO).execute(bookId, shelf);
+    }
+
+    public String[] getAllShelfs(){
+        try {
+            return new getAllShelfsAsyncTask(bookDAO).execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+            return null;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public LiveData<List<Book>> getBooksWithShelf(String shelf) {
+        return bookDAO.getBooksWithShelf(shelf);
+    }
+
     private static class insertAsyncTask extends AsyncTask<Book, Void, Void> {
 
         private BookDAO mAsyncTaskDao;
@@ -87,6 +107,34 @@ public class BookshelfRepository {
         }
     }
 
+    private static class setShelfofBookAsyncTask extends AsyncTask<String, Void, Void> {
+
+        private BookDAO mAsyncTaskDao;
+
+        setShelfofBookAsyncTask(BookDAO dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final String... params) {
+            mAsyncTaskDao.setShelfofBook(params[0], params [1]);
+            return null;
+        }
+    }
+
+    private static class getAllShelfsAsyncTask extends AsyncTask<Void, Void, String[]> {
+
+        private BookDAO mAsyncTaskDao;
+
+        getAllShelfsAsyncTask(BookDAO dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected String[] doInBackground(Void... voids) {
+            return mAsyncTaskDao.selectAllShelfs();
+        }
+    }
 }
 
 
