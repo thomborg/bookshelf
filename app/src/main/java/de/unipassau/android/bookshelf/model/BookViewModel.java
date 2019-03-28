@@ -43,8 +43,4 @@ public class BookViewModel extends AndroidViewModel {
     public void setShelf(String bookId, String shelf){
         mRepository.setShelfofBook(bookId, shelf);
     }
-
-    public LiveData<List<Book>> getBooksWithShelf(String shelf){
-        return mRepository.getBooksWithShelf(shelf);
-    }
 }

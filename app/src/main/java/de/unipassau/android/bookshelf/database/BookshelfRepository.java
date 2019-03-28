@@ -59,10 +59,6 @@ public class BookshelfRepository {
         }
     }
 
-    public LiveData<List<Book>> getBooksWithShelf(String shelf) {
-        return bookDAO.getBooksWithShelf(shelf);
-    }
-
     private static class insertAsyncTask extends AsyncTask<Book, Void, Void> {
 
         private BookDAO mAsyncTaskDao;

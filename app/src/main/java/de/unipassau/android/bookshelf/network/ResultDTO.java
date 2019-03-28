@@ -1,7 +1,10 @@
 package de.unipassau.android.bookshelf.network;
 
+/**
+ * DataTranferObject für den AsyncTask der GoogleAPI (innere Klasse MainAsync in MainActivity)
+ */
 public class ResultDTO {
-    private String title, subtitle, publisher, publishedDate, isbn13, authors,
+    private String title, publishedDate, isbn13, authors,
             thumbnail;
     private int pages;
 
@@ -21,28 +24,12 @@ public class ResultDTO {
         this.thumbnail = thumbnail;
     }
 
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public void setSubtitle(String subtitle) {
-        this.subtitle = subtitle;
     }
 
     public String getPublishedDate() {

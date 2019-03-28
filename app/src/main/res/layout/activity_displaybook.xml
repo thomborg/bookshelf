@@ -9,7 +9,7 @@
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_library_books_black_24dp"
+        android:src="@drawable/ic_library_books_black_placeholder"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,13 +26,13 @@
 
     <TextView
         android:id="@+id/title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Titel"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/author"
+        android:layout_margin="@dimen/display_book_margin"
         app:layout_constraintStart_toEndOf="@id/barrier2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageView" />
 
     <TextView
@@ -46,13 +46,12 @@
 
     <TextView
         android:id="@+id/author"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/display_book_margin"
-        android:text="Author"
         android:textSize="@dimen/display_book_textsize"
-        app:layout_constraintBottom_toTopOf="@id/isbn"
         app:layout_constraintStart_toEndOf="@id/barrier2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />
 
     <TextView
@@ -66,12 +65,11 @@
 
     <TextView
         android:id="@+id/isbn"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/display_book_margin"
-        android:text="ISBN"
         android:textSize="@dimen/display_book_textsize"
-        app:layout_constraintBottom_toTopOf="@id/publishedDate"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/barrier2"
         app:layout_constraintTop_toBottomOf="@id/author" />
 
@@ -86,12 +84,11 @@
 
     <TextView
         android:id="@+id/publishedDate"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/display_book_margin"
-        android:text="Date"
         android:textSize="@dimen/display_book_textsize"
-        app:layout_constraintBottom_toTopOf="@id/nrPages"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/barrier2"
         app:layout_constraintTop_toBottomOf="@id/isbn" />
 
@@ -106,12 +103,12 @@
 
     <TextView
         android:id="@+id/nrPages"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/display_book_margin"
-        android:text="#Page"
         android:textSize="@dimen/display_book_textsize"
         app:layout_constraintStart_toEndOf="@id/barrier2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/publishedDate" />
 
     <TextView
@@ -128,7 +125,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/display_book_margin"
-        android:text="Location"
         android:textSize="@dimen/display_book_textsize"
         app:layout_constraintStart_toEndOf="@id/barrier2"
         app:layout_constraintTop_toBottomOf="@id/nrPages" />
@@ -139,7 +135,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:onClick="refreshLocation"
-        android:src="@drawable/ic_add_location_black_24dp"
+        android:src="@drawable/ic_add_location_black_16dp"
         app:layout_constraintBottom_toBottomOf="@id/location"
         app:layout_constraintStart_toEndOf="@id/location"
         app:layout_constraintTop_toTopOf="@id/location" />
@@ -158,7 +154,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/display_book_margin"
-        android:text="Shelf"
         android:textSize="@dimen/display_book_textsize"
         app:layout_constraintStart_toEndOf="@id/barrier2"
         app:layout_constraintTop_toBottomOf="@id/location" />
@@ -169,7 +164,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:onClick="changeShelf"
-        android:src="@drawable/ic_settings_black_24dp"
+        android:src="@drawable/ic_settings_black_16dp"
         app:layout_constraintBottom_toBottomOf="@id/shelf"
         app:layout_constraintStart_toEndOf="@id/shelf"
         app:layout_constraintTop_toTopOf="@id/shelf" />
@@ -180,7 +175,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:onClick="addShelf"
-        android:src="@drawable/ic_add_black_24dp"
+        android:src="@drawable/ic_add_black_16dp"
         app:layout_constraintBottom_toBottomOf="@id/shelf"
         app:layout_constraintStart_toEndOf="@id/shelfButton"
         app:layout_constraintTop_toTopOf="@id/shelf" />
@@ -199,7 +194,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/display_book_margin"
-        android:text="#Pics"
         android:textSize="@dimen/display_book_textsize"
         app:layout_constraintStart_toEndOf="@id/textViewNrPics1"
         app:layout_constraintEnd_toStartOf="@id/textViewNrPics2"
@@ -220,7 +214,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:onClick="viewGallery"
-        android:src="@drawable/ic_photo_library_black_24dp"
+        android:src="@drawable/ic_photo_library_black_16dp"
         app:layout_constraintBottom_toBottomOf="@id/nrOfPictures"
         app:layout_constraintStart_toEndOf="@id/textViewNrPics2"
         app:layout_constraintEnd_toEndOf="parent"

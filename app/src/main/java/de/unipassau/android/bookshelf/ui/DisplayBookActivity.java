@@ -3,10 +3,8 @@ package de.unipassau.android.bookshelf.ui;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,11 +15,13 @@ import com.squareup.picasso.Picasso;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,30 +34,25 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProviders;
 import de.unipassau.android.bookshelf.R;
-import de.unipassau.android.bookshelf.database.BookDAO;
 import de.unipassau.android.bookshelf.model.Book;
-import de.unipassau.android.bookshelf.model.BookPicture;
 import de.unipassau.android.bookshelf.model.BookViewModel;
 import de.unipassau.android.bookshelf.ui.gallery.BookPictureStorage;
 import de.unipassau.android.bookshelf.ui.gallery.PictureGalleryActivity;
 
 /**
- * Artur
+ * Anzeige einzelner Bücher mit genauerer Information
+ * Möglichkeit Location hinzuzufügen, Regale zu verwalten, Fotos von diesen Büchern aufzunehmen und zu speichern
  */
 public class DisplayBookActivity extends AppCompatActivity {
-    private static final String TAG = "DISPLAY_BOOK";
     private static final int REQUEST_IMAGE_CAPTURE = 9002;
     private static final int REQUEST_EXTERNAL_STORAGE = 9003;
     private static final int OPEN_GALLERY_VIEW = 9004;
     public static final String PICTURE_STORAGE_PATH = "storagePath";
 
     File pictureFile = null;
-
-
     private BookPictureStorage bookPictureStorage;
 
     String bookId = "";
-
     TextView title, author, isbn, publishedDate, nrPages, nrPictures, shelf;
     ImageView cover;
     NumberPicker picker;
@@ -72,7 +67,6 @@ public class DisplayBookActivity extends AppCompatActivity {
         bookViewModel = ViewModelProviders.of(this).get(BookViewModel.class);
 
         Bundle bundle = getIntent().getExtras();
-
 
         if (bundle != null) {
             bookId = bundle.getString("id");
@@ -98,20 +92,19 @@ public class DisplayBookActivity extends AppCompatActivity {
         isbn.setText(book.getISBN());
         publishedDate.setText(book.getPublishDate());
         nrPages.setText(String.valueOf(book.getNumberOfPages()));
-        nrPictures.setText(String.format("%s: %s", getString(R.string.number_of_pictures), String.valueOf(bookPictureStorage.getNumberOfPictures())));
+        nrPictures.setText(String.valueOf(bookPictureStorage.getNumberOfPictures()));
         shelf.setText(book.getShelf());
         if(book.getUrlThumbnail()!=null && !book.getUrlThumbnail().isEmpty()){
             Picasso.get().load(book.getUrlThumbnail())
-                    .placeholder(R.drawable.ic_launcher_foreground)
-                    .error(R.drawable.ic_flash_off) //TODO richtige drawables
+                    .placeholder(R.drawable.ic_library_books_black_placeholder)
+                    .error(R.drawable.ic_library_books_black_placeholder)
                     .into(cover);
         }
         else{
-            cover.setImageResource(R.drawable.ic_library_books_black_24dp); //TODO hier auch
+            cover.setImageResource(R.drawable.ic_library_books_black_placeholder);
         }
-        //nrPictures.setText(String.valueOf(sampleArrayListNoProductionPls.size()));
 
-        FloatingActionButton cameraButton = (FloatingActionButton) findViewById(R.id.take_picture);
+        FloatingActionButton cameraButton = findViewById(R.id.take_picture);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,8 +121,8 @@ public class DisplayBookActivity extends AppCompatActivity {
             }
         });
 
-        snackbar = Snackbar.make(findViewById(android.R.id.content), "Ihr Buch steht noch in keinem Regal!", Snackbar.LENGTH_INDEFINITE)
-                .setAction("Eintragen", new View.OnClickListener() {
+        snackbar = Snackbar.make(findViewById(android.R.id.content), getString(R.string.displaybook_snackbar_hint), Snackbar.LENGTH_INDEFINITE)
+                .setAction(getString(R.string.displaybook_snackbar_action), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         changeShelf(view);
@@ -148,7 +141,6 @@ public class DisplayBookActivity extends AppCompatActivity {
 
         if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission_group.STORAGE)) {
-            Log.w(TAG, "Storage permission is not granted. Requesting permission");
 
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -163,7 +155,6 @@ public class DisplayBookActivity extends AppCompatActivity {
 
         if (!ActivityCompat.shouldShowRequestPermissionRationale(this,
                 Manifest.permission.CAMERA)) {
-            Log.w(TAG, "Camera permission is not granted. Requesting permission");
 
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA}, REQUEST_IMAGE_CAPTURE);
         }
@@ -196,7 +187,7 @@ public class DisplayBookActivity extends AppCompatActivity {
             }
         }
         // update picture count
-        nrPictures.setText(String.format("%s: %s", getString(R.string.number_of_pictures), String.valueOf(bookPictureStorage.getNumberOfPictures())));
+        nrPictures.setText(String.valueOf(bookPictureStorage.getNumberOfPictures()));
     }
 
     public void viewGallery(View v){
@@ -217,33 +208,31 @@ public class DisplayBookActivity extends AppCompatActivity {
 
     public void changeShelf(View v){
         snackbar.dismiss();
-        if(picker.getVisibility()==View.VISIBLE)
-            picker.setVisibility(View.GONE);
+
+        final String[] shelfs = bookViewModel.getAllShelfs();
+        if(shelfs.length==0) addShelf(v);
         else {
-            picker.setVisibility(View.VISIBLE);
+            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+            LayoutInflater inflater = this.getLayoutInflater();
+            final View dialogView = inflater.inflate(R.layout.custom_table, null);
+            dialogBuilder.setView(dialogView);
+            dialogBuilder.setTitle(R.string.choose_shelf);
+            final AlertDialog b = dialogBuilder.create();
 
-            final String[] shelfs = bookViewModel.getAllShelfs();
-
-            if(shelfs.length==1) {
-                bookViewModel.setShelf(book.getId(), shelfs[0]);
-                shelf.setText(shelfs[0]);
-            }
-
-            picker = findViewById(R.id.shelfPicker);
-            picker.setMinValue(0);
-            picker.setMaxValue(shelfs.length - 1);
-            picker.setDisplayedValues(shelfs);
-            picker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-
-            picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            ListView listView = dialogView.findViewById(R.id.listView);
+            ArrayAdapter listAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, shelfs);
+            listView.setAdapter(listAdapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
-                public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                    Toast.makeText(DisplayBookActivity.this, shelfs[newVal], Toast.LENGTH_SHORT).show();
-                    bookViewModel.setShelf(book.getId(), shelfs[newVal]);
-                    shelf.setText(shelfs[newVal]);
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    bookViewModel.setShelf(book.getId(), shelfs[position]);
+                    shelf.setText(shelfs[position]);
+                    b.dismiss();
                 }
             });
+            b.show();
         }
+
     }
 
     public void addShelf(View v){
@@ -253,18 +242,16 @@ public class DisplayBookActivity extends AppCompatActivity {
         LayoutInflater inflater = this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.custom_dialog, null);
         dialogBuilder.setView(dialogView);
-
         final EditText edt = dialogView.findViewById(R.id.editText);
 
-        dialogBuilder.setTitle("Add new Shelf");
-        dialogBuilder.setMessage("Enter name below");
-        dialogBuilder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+        dialogBuilder.setTitle(R.string.add_shelf);
+        dialogBuilder.setPositiveButton(R.string.done, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 bookViewModel.setShelf(book.getId(), edt.getText().toString());
                 shelf.setText(edt.getText().toString());
             }
         });
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
             }
         });
