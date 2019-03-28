@@ -210,11 +210,6 @@ public class MainActivity extends AppCompatActivity{
             Toast.makeText(this, "Note not saved", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-
-
     private void loadData() {
         Disposable disposable = booksRepository.getAllBooks().observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io()).subscribe(new Consumer<List<BookDetails>>() {
@@ -237,5 +232,8 @@ public class MainActivity extends AppCompatActivity{
             aa.notifyDataSetChanged();
 
         }
+
+
+
 }
 
