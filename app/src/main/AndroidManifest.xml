@@ -25,7 +25,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths"/>
         </provider>
 
 
@@ -39,9 +39,6 @@
         </activity>
         <activity android:name=".ui.barcodereader.BarcodeScanActivity" />
         <activity android:name=".ui.gallery.PictureGalleryActivity" />
-        <activity
-            android:name=".ui.SettingsActivity"
-            android:label="@string/action_settings" />
         <activity
             android:name=".ui.DisplayBookActivity"
             android:label="@string/app_name" />

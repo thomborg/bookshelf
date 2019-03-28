@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Bookshelf</string>
     <string name="action_settings">Settings</string>
     <string name="permission_camera_rationale">Permission Camera</string>
@@ -6,10 +6,10 @@
     <string name="low_storage_error">Low storage on device</string>
     <string name="auto_focus">Auto Focus</string>
     <string name="flash">Flash</string>
-    <string name="barcode_scanner_tooltip">Tap to capture. Pinch/Stretch to zoom</string>
+    <string name="barcode_scanner_tooltip">Auf Barcode tippen um ihn auszuwählen - Zoom mit 2 Fingern möglich</string>
     <string name="shelfs">Regale:</string>
     <string name="title">Titel:</string>
-    <string name="author">Autor(en):</string>
+    <string name="author" tools:ignore="Typos">Autor(en):</string>
     <string name="isbn">ISBN:</string>
     <string name="publishedDate">Herausgegeben:</string>
     <string name="nrPages">Seitenzahl:</string>
@@ -21,4 +21,22 @@
     <string name="permission_storage_rationale">Grant permission for storage access</string>
     <string name="image">Image</string>
     <string name="Pages">Pages</string>
+    <string name="name_shelf">Benenne dein neues Regal</string>
+    <string name="add_shelf">Neues Regal hinzufügen</string>
+    <string name="show_all_books">- Alle anzeigen -</string>
+    <string name="displaybook_snackbar_hint">Ihr Buch steht noch in keinem Regal!</string>
+    <string name="displaybook_snackbar_action">Eintragen</string>
+    <string name="error">Fehler!</string>
+    <string name="check_internet_connection">Bitte prüfen Sie Ihre Internetverbindung!</string>
+    <string name="no_book_found">Zu dieser ISBN wurde leider kein Eintrag in unserer Datenbank gefunden</string>
+    <string name="choose_shelf">Regal auswählen</string>
+    <string name="done">Done</string>
+    <string name="cancel">Cancel</string>
+    <string name="bookId">id</string>
+    <string name="delete_book">Eintrag löschen?</string>
+    <string name="delete_hint_1">Möchten Sie den Eintrag \'</string>
+    <string name="delete_hint_2">\' löschen?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+
 </resources>

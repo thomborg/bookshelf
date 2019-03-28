@@ -22,16 +22,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.unipassau.android.bookshelf.R;
 import de.unipassau.android.bookshelf.ui.DisplayBookActivity;
 
-/**
- * Michi
- */
 public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookViewHolder> {
 
 
     class BookViewHolder extends RecyclerView.ViewHolder {
         private final TextView author;
         private final TextView title;
-        private final TextView nrPics;
         private final ImageView cover;
         private final ConstraintLayout layout;
 
@@ -41,7 +37,6 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
             super(itemView);
             author = itemView.findViewById(R.id.author);
             title = itemView.findViewById(R.id.title);
-            nrPics = itemView.findViewById(R.id.nrPictures);
             cover = itemView.findViewById(R.id.cover);
             layout = itemView.findViewById(R.id.book_item_layout);
         }
@@ -49,7 +44,7 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
 
     private final Context context;
     private final LayoutInflater mInflater;
-    private List<Book> mBooks; // Cached copy of Books
+    private List<Book> mBooks;
     private BookViewModel bookViewModel;
 
     public BookListAdapter(Context context) {
@@ -68,15 +63,14 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     public void onBindViewHolder(final BookViewHolder holder, int i) {
         holder.title.setText(mBooks.get(i).getTitle());
         holder.author.setText(mBooks.get(i).getAuthor());
-        holder.nrPics.setText(String.valueOf(mBooks.get(i).getNumberOfPages())); //TODO auf number of photos ändern
         if(mBooks.get(i).getUrlThumbnail()!=null && !mBooks.get(i).getUrlThumbnail().isEmpty()){
             Picasso.get().load(mBooks.get(i).getUrlThumbnail())
-                    .placeholder(R.drawable.ic_launcher_foreground)
-                    .error(R.drawable.ic_flash_off) //TODO richtige drawables
+                    .placeholder(R.drawable.ic_library_books_black_placeholder)
+                    .error(R.drawable.ic_library_books_black_placeholder)
                     .into(holder.cover);
         }
         else{
-            holder.cover.setImageResource(R.drawable.ic_library_books_black_24dp); //TODO hier auch
+            holder.cover.setImageResource(R.drawable.ic_library_books_black_placeholder);
         }
 
         holder.layout.setOnClickListener(new View.OnClickListener() {
@@ -93,10 +87,13 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
             @Override
             public boolean onLongClick(View v) {
                 final AlertDialog noticeDialog = new AlertDialog.Builder(context).create();
-                noticeDialog.setTitle("Eintrag löschen?");
-                noticeDialog.setMessage("Möchten Sie den Eintrag " + mBooks.get(holder.getAdapterPosition()).getTitle() + " löschen?");
+                noticeDialog.setTitle(context.getString(R.string.delete_book));
+                noticeDialog.setMessage(
+                        String.format("%s" + mBooks.get(holder.getAdapterPosition()).getTitle() + "%s"
+                                ,context.getString(R.string.delete_hint_1)
+                                ,context.getString(R.string.delete_hint_2)));
                 noticeDialog.setCancelable(true);
-                noticeDialog.setButton(DialogInterface.BUTTON_POSITIVE, "JA", new DialogInterface.OnClickListener() {
+                noticeDialog.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         bookViewModel.delete(mBooks.get(holder.getAdapterPosition()));
@@ -104,13 +101,12 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
                         noticeDialog.dismiss();
                     }
                 });
-                noticeDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "NEIN", new DialogInterface.OnClickListener() {
+                noticeDialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         noticeDialog.dismiss();
                     }
                 });
-
                 noticeDialog.show();
                 return false;
             }
@@ -123,8 +119,6 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
         notifyDataSetChanged();
     }
 
-    // getItemCount() is called many times, and when it is first called,
-    // mBooks has not been updated (means initially, it's null, and we can't return null).
     @Override
     public int getItemCount() {
         if (mBooks != null)
