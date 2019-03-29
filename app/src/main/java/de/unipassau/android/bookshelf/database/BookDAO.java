@@ -39,6 +39,9 @@ public interface BookDAO {
     @Query("UPDATE Book SET shelf = :shelf WHERE id = :bookId")
     void setShelfofBook(String bookId, String shelf);
 
+    @Query("UPDATE Book SET location = :location WHERE id = :bookId")
+    void setLocationOfBook(String bookId, String location);
+
     @Query("SELECT DISTINCT shelf FROM Book WHERE shelf IS NOT NULL")
     String[] selectAllShelfs();
 }

@@ -4,8 +4,10 @@ package de.unipassau.android.bookshelf.ui.barcodereader;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -48,7 +50,6 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
     private static final int RC_HANDLE_GMS = 9001;
     private static final int RC_HANDLE_CAMERA_PERM = 2;
 
-    // intend constants
     public static final String BarcodeObject = "Barcode";
 
     boolean autoFocus = true;
@@ -66,6 +67,7 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_barcode);
+
 
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
@@ -150,6 +152,7 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
                 new MultiProcessor.Builder<>(barcodeFactory).build());
 
 
+
         if (!barcodeDetector.isOperational()) {
             // Note: The first time that an app using the barcode or face API is installed on a
             // device, GMS will download a native libraries to the device in order to do detection.
@@ -161,6 +164,9 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
             // available.  The detectors will automatically become operational once the library
             // downloads complete on device.
             Log.w(TAG, "Detector dependencies are not yet available.");
+
+            Toast.makeText(this, R.string.scanner_not_ready, Toast.LENGTH_LONG).show();
+
 
             // Check for low storage.  If there is low storage, the native library will not be
             // downloaded, so detection will not become operational.
@@ -335,14 +341,31 @@ public class BarcodeScanActivity extends AppCompatActivity implements BarcodeGra
         }
 
         if (best != null) {
-            Intent data = new Intent();
-            data.putExtra(BarcodeObject, best);
-            setResult(CommonStatusCodes.SUCCESS, data);
-            finish();
-            return true;
+            if (best.valueFormat == Barcode.ISBN) {
+                Intent data = new Intent();
+                data.putExtra(BarcodeObject, best);
+                setResult(CommonStatusCodes.SUCCESS, data);
+                finish();
+                return true;
+            } else {
+                final AlertDialog noticeDialog = new AlertDialog.Builder(this).create();
+                noticeDialog.setTitle(getString(R.string.error));
+                noticeDialog.setMessage(getString(R.string.no_valid_isbn));
+                noticeDialog.setCancelable(true);
+                noticeDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        noticeDialog.dismiss();
+                    }
+                });
+                noticeDialog.show();
+                return false;
+            }
+
         }
         return false;
     }
+
 
     private class CaptureGestureListener extends GestureDetector.SimpleOnGestureListener {
         @Override

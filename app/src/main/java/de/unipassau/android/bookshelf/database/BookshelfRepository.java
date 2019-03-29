@@ -47,6 +47,10 @@ public class BookshelfRepository {
         new setShelfofBookAsyncTask(bookDAO).execute(bookId, shelf);
     }
 
+    public void setLocationofBookAsyncTask(String bookId, String location) {
+        new setLocationofBookAsyncTask(bookDAO).execute(bookId, location);
+    }
+
     public String[] getAllShelfs(){
         try {
             return new getAllShelfsAsyncTask(bookDAO).execute().get();
@@ -117,6 +121,24 @@ public class BookshelfRepository {
             return null;
         }
     }
+
+    private static class setLocationofBookAsyncTask extends AsyncTask<String, Void, Void> {
+
+        private BookDAO mAsyncTaskDao;
+
+        setLocationofBookAsyncTask(BookDAO dao) {
+            mAsyncTaskDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(final String... params) {
+            mAsyncTaskDao.setLocationOfBook(params[0], params [1]);
+            return null;
+        }
+    }
+
+
+
 
     private static class getAllShelfsAsyncTask extends AsyncTask<Void, Void, String[]> {
 

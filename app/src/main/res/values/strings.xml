@@ -38,5 +38,13 @@
     <string name="delete_hint_2">\' löschen?</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
+    <string name="no_valid_isbn">Keine gültige ISBN! Versuche es erneut!</string>
+    <string name="service_not_available">Dienst nicht verfügbar</string>
+    <string name="invalid_lat_long_used">Fehlerhafte Längen- und Breitengrad nutzen</string>
+    <string name="no_address_found">Keine Adresse gefunden</string>
+    <string name="address_found">Adresse gefunden</string>
+    <string name="no_geocoder_available">Kein Ortungsdienst verfügbar</string>
+    <string name="scanner_not_ready">Play Service Downlaod noch nicht fretig! Bitte nochmal versuchen.</string>
+    <string name="no_address">Keine Adresse</string>
 
 </resources>

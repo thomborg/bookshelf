@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         RecyclerView recyclerView = findViewById(R.id.booksRecyclerView);
         adapter = new BookListAdapter(this);
         LinearLayoutManager llm = new LinearLayoutManager(this);
@@ -110,12 +112,14 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         String[] tmp = mBookViewModel.getAllShelfs();
-        shelfArray = new String[tmp.length+1];
-        System.arraycopy(tmp, 0, shelfArray, 0, tmp.length);
-        shelfArray[shelfArray.length-1] = getString(R.string.show_all_books);
+        if (tmp != null) {
+            shelfArray = new String[tmp.length+1];
+            System.arraycopy(tmp, 0, shelfArray, 0, tmp.length);
+            shelfArray[shelfArray.length-1] = getString(R.string.show_all_books);
+            shelfAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, shelfArray);
+            shelfSpinner.setAdapter(shelfAdapter);
+        }
 
-        shelfAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, shelfArray);
-        shelfSpinner.setAdapter(shelfAdapter);
 
         super.onStart();
     }

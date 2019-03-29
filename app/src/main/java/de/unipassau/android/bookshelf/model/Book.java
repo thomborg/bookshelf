@@ -5,6 +5,7 @@ import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import de.unipassau.android.bookshelf.R;
 
 @Entity
 public class Book {
@@ -18,6 +19,7 @@ public class Book {
     private String publishDate;
     private String urlThumbnail;
     private String shelf;
+    private String location;
 
 
     public Book(String author, String title, String ISBN, int numberOfPages, String publishDate, String urlThumbnail) {
@@ -95,4 +97,11 @@ public class Book {
         this.urlThumbnail = urlThumbnail;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 }

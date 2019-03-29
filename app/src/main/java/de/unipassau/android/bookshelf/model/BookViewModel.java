@@ -43,4 +43,8 @@ public class BookViewModel extends AndroidViewModel {
     public void setShelf(String bookId, String shelf){
         mRepository.setShelfofBook(bookId, shelf);
     }
+
+    public void setLocation(String bookId, String location) {
+        mRepository.setLocationofBookAsyncTask(bookId, location);
+    }
 }
