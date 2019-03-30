@@ -1,27 +1,22 @@
 package de.unipassau.android.bookshelf.model;
 
 import android.app.AlertDialog;
-import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import androidx.recyclerview.widget.RecyclerView;
 import de.unipassau.android.bookshelf.R;
 import de.unipassau.android.bookshelf.ui.gallery.ShowPictureFullScreenActivity;
 
+/**
+ * Custom Adapter für BookPicture-Objekte.
+ */
 public class BookPictureAdapter extends RecyclerView.Adapter<BookPictureAdapter.ViewHolder> {
 
     private List<BookPicture> galleryList;
@@ -54,30 +49,29 @@ public class BookPictureAdapter extends RecyclerView.Adapter<BookPictureAdapter.
             @Override
             public boolean onLongClick(View v) {
 
-                        final AlertDialog noticeDialog = new AlertDialog.Builder(v.getContext()).create();
-                        noticeDialog.setTitle("Bild löschen?");
-                        noticeDialog.setMessage("Möchten Sie das Bild löschen?");
-                        noticeDialog.setCancelable(true);
-                        noticeDialog.setButton(DialogInterface.BUTTON_POSITIVE, "JA", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if (bookPicture.delete()) {
-                                    galleryList.remove(bookPicture);
-                                    // bookViewModel.delete(mBooks.get(holder.getAdapterPosition()));
-                                    notifyItemRemoved(viewHolder.getAdapterPosition());
-                                }
-                                noticeDialog.dismiss();
-                            }
-                        });
-                        noticeDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "NEIN", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                noticeDialog.dismiss();
-                            }
-                        });
-                        noticeDialog.show();
-                        return true;
+                final AlertDialog noticeDialog = new AlertDialog.Builder(v.getContext()).create();
+                noticeDialog.setTitle(v.getContext().getString(R.string.delete_picture_title));
+                noticeDialog.setMessage(v.getContext().getString(R.string.delete_picture));
+                noticeDialog.setCancelable(true);
+                noticeDialog.setButton(DialogInterface.BUTTON_POSITIVE, v.getContext().getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (bookPicture.delete()) {
+                            galleryList.remove(bookPicture);
+                            notifyItemRemoved(viewHolder.getAdapterPosition());
+                        }
+                        noticeDialog.dismiss();
                     }
+                });
+                noticeDialog.setButton(DialogInterface.BUTTON_NEGATIVE, v.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        noticeDialog.dismiss();
+                    }
+                });
+                noticeDialog.show();
+                return true;
+            }
 
         });
     }
@@ -87,8 +81,9 @@ public class BookPictureAdapter extends RecyclerView.Adapter<BookPictureAdapter.
         return galleryList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private ImageView img;
+
         public ViewHolder(View view) {
             super(view);
 

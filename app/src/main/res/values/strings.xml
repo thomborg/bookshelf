@@ -46,5 +46,8 @@
     <string name="no_geocoder_available">Kein Ortungsdienst verfügbar</string>
     <string name="scanner_not_ready">Play Service Downlaod noch nicht fretig! Bitte nochmal versuchen.</string>
     <string name="no_address">Keine Adresse</string>
+    <string name="you_need_play_services">Du brauchst Google Play Services um diese App zu benutzen</string>
+    <string name="delete_picture">Möchten Sie das Bild löschen?</string>
+    <string name="delete_picture_title">Bild löschen?</string>
 
 </resources>

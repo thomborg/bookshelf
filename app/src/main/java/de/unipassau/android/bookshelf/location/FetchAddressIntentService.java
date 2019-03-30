@@ -18,14 +18,15 @@ import java.util.Locale;
 import de.unipassau.android.bookshelf.R;
 
 
+/**
+ * Service für das abfragen einer Location.
+ * Quelle: https://developer.android.com/training/location/display-address
+ */
 public class FetchAddressIntentService extends IntentService {
     protected ResultReceiver receiver;
     private static final String TAG = "Location service";
 
-    /**
-     * Creates an IntentService.
-     *
-     */
+
     public FetchAddressIntentService() {
         super(TAG);
     }
@@ -48,6 +49,9 @@ public class FetchAddressIntentService extends IntentService {
 
         List<Address> addresses = null;
 
+        if (location == null) {
+            return;
+        }
 
         try {
             addresses = geocoder.getFromLocation(
@@ -69,7 +73,7 @@ public class FetchAddressIntentService extends IntentService {
         }
 
         // Handle case where no address was found.
-        if (addresses == null || addresses.size()  == 0) {
+        if (addresses == null || addresses.size() == 0) {
             if (errorMessage.isEmpty()) {
                 errorMessage = getString(R.string.no_address_found);
                 Log.e(TAG, errorMessage);
@@ -81,7 +85,7 @@ public class FetchAddressIntentService extends IntentService {
 
             // Fetch the address lines using getAddressLine,
             // join them, and send them to the thread.
-            for(int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+            for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
                 addressFragments.add(address.getAddressLine(i));
             }
             Log.i(TAG, getString(R.string.address_found));
@@ -89,7 +93,6 @@ public class FetchAddressIntentService extends IntentService {
                     TextUtils.join(System.getProperty("line.separator"),
                             addressFragments));
         }
-
 
 
     }

@@ -14,22 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.provider.MediaStore;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.squareup.picasso.Picasso;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -41,15 +25,26 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.squareup.picasso.Picasso;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProviders;
-
 import de.unipassau.android.bookshelf.R;
 import de.unipassau.android.bookshelf.location.FetchAddressIntentService;
 import de.unipassau.android.bookshelf.location.LocationConstants;
@@ -81,7 +76,6 @@ public class DisplayBookActivity extends AppCompatActivity {
     private Location lastKnownLocation;
     private AddressResultReceiver resultReceiver;
     private FusedLocationProviderClient fusedLocationClient;
-
 
 
     File pictureFile = null;
@@ -126,13 +120,11 @@ public class DisplayBookActivity extends AppCompatActivity {
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             lastKnownLocation = location;
                         }
                     }
                 });
-
 
 
         // Intent
@@ -165,7 +157,7 @@ public class DisplayBookActivity extends AppCompatActivity {
         nrPages.setText(String.valueOf(book.getNumberOfPages()));
         nrPictures.setText(String.valueOf(bookPictureStorage.getNumberOfPictures()));
         shelf.setText(book.getShelf());
-        if (book.getLocation() != null ) {
+        if (book.getLocation() != null) {
             location.setText(book.getLocation());
         } else {
             location.setText(R.string.no_address);
@@ -236,6 +228,9 @@ public class DisplayBookActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Requests the camera to capture a image.
+     */
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -254,6 +249,7 @@ public class DisplayBookActivity extends AppCompatActivity {
         }
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE) {
@@ -261,7 +257,6 @@ public class DisplayBookActivity extends AppCompatActivity {
                 pictureFile.delete();
             }
         }
-        // update picture count
         nrPictures.setText(String.valueOf(bookPictureStorage.getNumberOfPictures()));
     }
 
@@ -286,7 +281,7 @@ public class DisplayBookActivity extends AppCompatActivity {
 
 
         startIntentService();
-        fetchAddressButtonHander(v);
+        fetchAddressButtonHandler(v);
 
     }
 
@@ -377,7 +372,7 @@ public class DisplayBookActivity extends AppCompatActivity {
         super.onResume();
 
         if (!checkPlayServices()) {
-            Toast.makeText(this, "Du brauchst Google Play Services um diese App zu benutzen", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.you_need_play_services, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -414,7 +409,7 @@ public class DisplayBookActivity extends AppCompatActivity {
         location.setText(book.getLocation());
     }
 
-    private void fetchAddressButtonHander(View view) {
+    private void fetchAddressButtonHandler(View view) {
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
@@ -456,6 +451,7 @@ public class DisplayBookActivity extends AppCompatActivity {
 
     class AddressResultReceiver extends ResultReceiver {
         String addressOutput;
+
         public AddressResultReceiver(Handler handler) {
             super(handler);
         }

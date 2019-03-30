@@ -7,40 +7,42 @@ import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import de.unipassau.android.bookshelf.model.Book;
 
+/**
+ * Room-Datenbank der App.
+ */
 @Database(entities = {Book.class}, version = 1, exportSchema = false)
 public abstract class BookshelfDatabase extends RoomDatabase {
-   public abstract BookDAO daoAccess() ;
+    public abstract BookDAO daoAccess();
 
-   private static final String DATABASE_NAME = "bookshelf-db";
+    private static final String DATABASE_NAME = "bookshelf-db";
 
-   private static volatile BookshelfDatabase INSTANCE;
+    private static volatile BookshelfDatabase INSTANCE;
 
-   public static BookshelfDatabase getDatabase(final Context context) {
-       if (INSTANCE == null) {
-           synchronized (BookshelfDatabase.class) {
-               if (INSTANCE == null) {
-                   INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                           BookshelfDatabase.class, DATABASE_NAME)
-                           .fallbackToDestructiveMigration()
-                           .addCallback(sRoomDatabaseCallback)
-                           .build();
+    public static BookshelfDatabase getDatabase(final Context context) {
+        if (INSTANCE == null) {
+            synchronized (BookshelfDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
+                            BookshelfDatabase.class, DATABASE_NAME)
+                            .fallbackToDestructiveMigration()
+                            .addCallback(sRoomDatabaseCallback)
+                            .build();
 
-               }
-           }
-       }
-       return INSTANCE;
-   }
+                }
+            }
+        }
+        return INSTANCE;
+    }
 
 
     private static RoomDatabase.Callback sRoomDatabaseCallback =
-            new RoomDatabase.Callback(){
+            new RoomDatabase.Callback() {
 
                 @Override
-                public void onOpen (@NonNull SupportSQLiteDatabase db){
+                public void onOpen(@NonNull SupportSQLiteDatabase db) {
                     super.onOpen(db);
                     new PopulateDbAsync(INSTANCE).execute();
                 }

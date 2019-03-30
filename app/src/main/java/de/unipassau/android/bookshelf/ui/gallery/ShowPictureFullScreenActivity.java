@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import com.github.chrisbanes.photoview.PhotoView;
@@ -14,6 +12,9 @@ import com.github.chrisbanes.photoview.PhotoView;
 import androidx.appcompat.app.AppCompatActivity;
 import de.unipassau.android.bookshelf.R;
 
+/**
+ * Activity um ein Bild in Fullscreen azuzeigen. Benutzt die 3rd Party Library PhotoView für Pinch-To-Zoom Interaktionen.
+ */
 public class ShowPictureFullScreenActivity extends AppCompatActivity {
     private PhotoView photoView;
 

@@ -5,6 +5,10 @@ import android.media.ThumbnailUtils;
 
 import java.io.File;
 
+
+/**
+ * Klasse für ein BookPicture. Generiert bei Erstellung ein Thumbnail des Bildes.
+ */
 public class BookPicture {
     private static int THUMBNAIL_HEIGHT = 240;
     private static int THUMBNAIL_WIDTH = 120;

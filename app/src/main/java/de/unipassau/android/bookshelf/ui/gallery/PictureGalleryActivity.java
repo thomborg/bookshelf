@@ -3,25 +3,26 @@ package de.unipassau.android.bookshelf.ui.gallery;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.unipassau.android.bookshelf.R;
 import de.unipassau.android.bookshelf.model.BookPicture;
 import de.unipassau.android.bookshelf.model.BookPictureAdapter;
 import de.unipassau.android.bookshelf.ui.DisplayBookActivity;
 
+/**
+ * Activity um gespeicherte Bilder als Gallerie anzuzeigen. Durch klicken öffentet sich das ausgwählte Bild in Fullscreenn und durch langes Tippen kann es gelöscht werden.
+ */
 public class PictureGalleryActivity extends AppCompatActivity {
-        private String storagePath;
-        private List<BookPicture>bookPictureList;
+    private String storagePath;
+    private List<BookPicture> bookPictureList;
 
 
     @Override
@@ -48,7 +49,6 @@ public class PictureGalleryActivity extends AppCompatActivity {
     }
 
 
-
     private void loadBookPictures() {
 
         File dataDir = new File(storagePath);
@@ -56,8 +56,8 @@ public class PictureGalleryActivity extends AppCompatActivity {
             File[] fileList = dataDir.listFiles();
 
             for (final File file : fileList) {
-                        Bitmap imageBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-                        bookPictureList.add(new BookPicture(file.getPath(), imageBitmap));
+                Bitmap imageBitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                bookPictureList.add(new BookPicture(file.getPath(), imageBitmap));
             }
         }
 

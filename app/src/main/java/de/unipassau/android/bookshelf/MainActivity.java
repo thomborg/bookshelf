@@ -4,16 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +11,7 @@ import android.widget.Spinner;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +20,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import de.unipassau.android.bookshelf.model.Book;
 import de.unipassau.android.bookshelf.model.BookListAdapter;
 import de.unipassau.android.bookshelf.model.BookViewModel;
@@ -38,9 +35,8 @@ import de.unipassau.android.bookshelf.ui.DisplayBookActivity;
 import de.unipassau.android.bookshelf.ui.barcodereader.BarcodeScanActivity;
 
 /**
- * MainActivity: Anzeige der verschiedenen Bücher in einer Liste, Möglichkeit nach Regalen zu sortieren
+ * MainActivity: Anzeige der verschiedenen Bücher in einer Liste, Möglichkeit nach Regalen zu sortieren.
  */
-
 public class MainActivity extends AppCompatActivity {
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String JSON_KEY_TITLE = "title";
@@ -66,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
 
         RecyclerView recyclerView = findViewById(R.id.booksRecyclerView);
@@ -113,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         String[] tmp = mBookViewModel.getAllShelfs();
         if (tmp != null) {
-            shelfArray = new String[tmp.length+1];
+            shelfArray = new String[tmp.length + 1];
             System.arraycopy(tmp, 0, shelfArray, 0, tmp.length);
-            shelfArray[shelfArray.length-1] = getString(R.string.show_all_books);
+            shelfArray[shelfArray.length - 1] = getString(R.string.show_all_books);
             shelfAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, shelfArray);
             shelfSpinner.setAdapter(shelfAdapter);
         }
@@ -135,17 +130,16 @@ public class MainActivity extends AppCompatActivity {
                     client.execute(barcode.displayValue);
                 }
             }
-        }
-        else {
+        } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
-    public class MainAsyncTask extends BookApiClient{
+    public class MainAsyncTask extends BookApiClient {
 
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
-            if(jsonObject==null){
+            if (jsonObject == null) {
                 final android.app.AlertDialog noticeDialog = new AlertDialog.Builder(MainActivity.this).create();
                 noticeDialog.setTitle(getString(R.string.error));
                 noticeDialog.setMessage(getString(R.string.check_internet_connection));
@@ -163,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
             JSONArray items = null;
             ResultDTO result = new ResultDTO();
             try {
-                if(jsonObject.has(JSON_KEY_TOTALITEMS) && jsonObject.getInt(JSON_KEY_TOTALITEMS)==0){
+                if (jsonObject.has(JSON_KEY_TOTALITEMS) && jsonObject.getInt(JSON_KEY_TOTALITEMS) == 0) {
                     final android.app.AlertDialog noticeDialog = new AlertDialog.Builder(MainActivity.this).create();
                     noticeDialog.setTitle(getString(R.string.error));
                     noticeDialog.setMessage(getString(R.string.no_book_found));
@@ -175,8 +169,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
                     noticeDialog.show();
-                }
-                else {
+                } else {
                     if (jsonObject.has(JSON_KEY_ITEMS))
                         items = jsonObject.getJSONArray(JSON_KEY_ITEMS);
                     if (items.getJSONObject(0).has(JSON_KEY_INFO))
@@ -185,17 +178,17 @@ public class MainActivity extends AppCompatActivity {
                         result.setTitle(info.getString(JSON_KEY_TITLE));
                     if (info.has(JSON_KEY_PUBLISHEDDATE))
                         result.setPublishedDate(info.getString(JSON_KEY_PUBLISHEDDATE));
-                    if(info.has(JSON_KEY_INDIDENT)){
+                    if (info.has(JSON_KEY_INDIDENT)) {
                         JSONArray isbnArray = info.getJSONArray(JSON_KEY_INDIDENT);
-                        for(int i = 0; i < isbnArray.length(); i++){
+                        for (int i = 0; i < isbnArray.length(); i++) {
                             JSONObject o = (JSONObject) isbnArray.get(i);
-                            if(o.has(JSON_KEY_TYPE) && o.getString(JSON_KEY_TYPE).equals(JSON_KEY_ISBN13))
+                            if (o.has(JSON_KEY_TYPE) && o.getString(JSON_KEY_TYPE).equals(JSON_KEY_ISBN13))
                                 result.setIsbn13(o.getString(JSON_KEY_IDENTIFIER));
                         }
                     }
                     if (info.has(JSON_KEY_IMAGELINKS))
                         result.setThumbnail(info.getJSONObject(JSON_KEY_IMAGELINKS).getString(JSON_KEY_THUMBNAIL));
-                    if(info.has(JSON_KEY_PAGECOUNT))
+                    if (info.has(JSON_KEY_PAGECOUNT))
                         result.setPages(info.getInt(JSON_KEY_PAGECOUNT));
                     StringBuilder authors = new StringBuilder();
                     JSONArray authorArray;
@@ -226,13 +219,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected void showShelf(String shelfToShow){
+    protected void showShelf(String shelfToShow) {
         if (shelfToShow.equals(getString(R.string.show_all_books))) {
             adapter.setBooks(mBookViewModel.getAllBooks().getValue());
-        }
-        else {
+        } else {
             List<Book> tmp = mBookViewModel.getAllBooks().getValue();
-            if(tmp!=null){
+            if (tmp != null) {
                 List<Book> booksToShow = new ArrayList<>();
                 for (int i = 0; i < tmp.size(); i++)
                     if (tmp.get(i).getShelf() != null && tmp.get(i).getShelf().equals(shelfToShow))

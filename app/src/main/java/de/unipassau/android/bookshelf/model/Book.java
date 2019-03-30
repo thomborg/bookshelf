@@ -5,8 +5,10 @@ import java.util.UUID;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import de.unipassau.android.bookshelf.R;
 
+/**
+ * Datenbank Klasse für ein Buch.
+ */
 @Entity
 public class Book {
     @NonNull

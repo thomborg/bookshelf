@@ -10,31 +10,34 @@ import androidx.room.Query;
 import androidx.room.Update;
 import de.unipassau.android.bookshelf.model.Book;
 
+/**
+ * Data Access Objekt für Book Tabelle
+ */
 @Dao
 public interface BookDAO {
     @Insert
-    void insertOnlySingleBook (Book book);
+    void insertOnlySingleBook(Book book);
 
     @Insert
-    void insertMultipleBooks (List<Book> bookList);
+    void insertMultipleBooks(List<Book> bookList);
 
     @Query("SELECT * FROM Book")
     LiveData<List<Book>> fetchAllBooks();
 
     @Query("SELECT * FROM Book WHERE id = :bookId")
-    Book fetchOneBookById (String bookId);
+    Book fetchOneBookById(String bookId);
 
     @Query("SELECT * FROM Book WHERE shelf = :shelf")
-    LiveData<List<Book>> getBooksWithShelf (String shelf);
+    LiveData<List<Book>> getBooksWithShelf(String shelf);
 
     @Update
-    void updateBook (Book book);
+    void updateBook(Book book);
 
     @Delete
-    void deleteBook (Book book);
+    void deleteBook(Book book);
 
     @Query("DELETE FROM Book")
-    void deleteAllBooks ();
+    void deleteAllBooks();
 
     @Query("UPDATE Book SET shelf = :shelf WHERE id = :bookId")
     void setShelfofBook(String bookId, String shelf);

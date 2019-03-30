@@ -9,6 +9,9 @@ import java.util.concurrent.ExecutionException;
 import androidx.lifecycle.LiveData;
 import de.unipassau.android.bookshelf.model.Book;
 
+/**
+ * Repository von der Datenbank.
+ */
 public class BookshelfRepository {
     private BookDAO bookDAO;
     private LiveData<List<Book>> bookList;
@@ -23,15 +26,15 @@ public class BookshelfRepository {
         return bookList;
     }
 
-    public void insert (Book book) {
+    public void insert(Book book) {
         new insertAsyncTask(bookDAO).execute(book);
     }
 
-    public void delete (Book book){
+    public void delete(Book book) {
         new deleteAsyncTask(bookDAO).execute(book);
     }
 
-    public Book findBookById(String id){
+    public Book findBookById(String id) {
         try {
             return new findBookByIdAsyncTask(bookDAO).execute(id).get();
         } catch (ExecutionException e) {
@@ -43,7 +46,7 @@ public class BookshelfRepository {
         }
     }
 
-    public void setShelfofBook(String bookId, String shelf){
+    public void setShelfofBook(String bookId, String shelf) {
         new setShelfofBookAsyncTask(bookDAO).execute(bookId, shelf);
     }
 
@@ -51,7 +54,7 @@ public class BookshelfRepository {
         new setLocationofBookAsyncTask(bookDAO).execute(bookId, location);
     }
 
-    public String[] getAllShelfs(){
+    public String[] getAllShelfs() {
         try {
             return new getAllShelfsAsyncTask(bookDAO).execute().get();
         } catch (ExecutionException e) {
@@ -117,7 +120,7 @@ public class BookshelfRepository {
 
         @Override
         protected Void doInBackground(final String... params) {
-            mAsyncTaskDao.setShelfofBook(params[0], params [1]);
+            mAsyncTaskDao.setShelfofBook(params[0], params[1]);
             return null;
         }
     }
@@ -132,12 +135,10 @@ public class BookshelfRepository {
 
         @Override
         protected Void doInBackground(final String... params) {
-            mAsyncTaskDao.setLocationOfBook(params[0], params [1]);
+            mAsyncTaskDao.setLocationOfBook(params[0], params[1]);
             return null;
         }
     }
-
-
 
 
     private static class getAllShelfsAsyncTask extends AsyncTask<Void, Void, String[]> {

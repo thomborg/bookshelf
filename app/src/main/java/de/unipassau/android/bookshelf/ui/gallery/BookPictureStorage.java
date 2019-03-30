@@ -1,20 +1,18 @@
 package de.unipassau.android.bookshelf.ui.gallery;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.UUID;
-
 
 import de.unipassau.android.bookshelf.model.Book;
 
+/**
+ * Klasse um die Bilder die zu einem Buch gehören zu verwalten. Erstellt ein privates Album im Speicher der App.
+ */
 public class BookPictureStorage {
     private static final String LOG = "BookPicture Store";
 
@@ -36,8 +34,6 @@ public class BookPictureStorage {
     }
 
     public File createBookPictureFile() throws IOException {
-        // Create an image file name
-
         return File.createTempFile(
                 BOOKSHELF_PREFIX + UUID.randomUUID(),
                 ".jpg",
@@ -55,10 +51,9 @@ public class BookPictureStorage {
             return fileList.length;
         } else
             return 0;
-        }
+    }
 
 
-
- }
+}
 
 

@@ -9,6 +9,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import de.unipassau.android.bookshelf.database.BookshelfRepository;
 
+/**
+ * View Model für die Book-Objekte.
+ */
 public class BookViewModel extends AndroidViewModel {
     private BookshelfRepository mRepository;
 
@@ -28,19 +31,19 @@ public class BookViewModel extends AndroidViewModel {
         mRepository.insert(book);
     }
 
-    public void delete(Book book){
+    public void delete(Book book) {
         mRepository.delete(book);
     }
 
-    public Book findBookById(String id){
+    public Book findBookById(String id) {
         return mRepository.findBookById(id);
     }
 
-    public String[] getAllShelfs(){
+    public String[] getAllShelfs() {
         return mRepository.getAllShelfs();
     }
 
-    public void setShelf(String bookId, String shelf){
+    public void setShelf(String bookId, String shelf) {
         mRepository.setShelfofBook(bookId, shelf);
     }
 

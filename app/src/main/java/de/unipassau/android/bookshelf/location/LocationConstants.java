@@ -1,5 +1,8 @@
 package de.unipassau.android.bookshelf.location;
 
+/**
+ * Konstanten für den Location-Service
+ */
 public class LocationConstants {
     public static final int SUCCESS_RESULT = 0;
     public static final int FAILURE_RESULT = 1;

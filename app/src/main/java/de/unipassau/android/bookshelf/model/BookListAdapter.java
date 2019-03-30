@@ -22,6 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import de.unipassau.android.bookshelf.R;
 import de.unipassau.android.bookshelf.ui.DisplayBookActivity;
 
+/**
+ * Custom Adapter für Book-Objekte
+ */
 public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookViewHolder> {
 
 
@@ -30,7 +33,6 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
         private final TextView title;
         private final ImageView cover;
         private final ConstraintLayout layout;
-
 
 
         private BookViewHolder(View itemView) {
@@ -63,13 +65,12 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
     public void onBindViewHolder(final BookViewHolder holder, int i) {
         holder.title.setText(mBooks.get(i).getTitle());
         holder.author.setText(mBooks.get(i).getAuthor());
-        if(mBooks.get(i).getUrlThumbnail()!=null && !mBooks.get(i).getUrlThumbnail().isEmpty()){
+        if (mBooks.get(i).getUrlThumbnail() != null && !mBooks.get(i).getUrlThumbnail().isEmpty()) {
             Picasso.get().load(mBooks.get(i).getUrlThumbnail())
                     .placeholder(R.drawable.ic_library_books_black_placeholder)
                     .error(R.drawable.ic_library_books_black_placeholder)
                     .into(holder.cover);
-        }
-        else{
+        } else {
             holder.cover.setImageResource(R.drawable.ic_library_books_black_placeholder);
         }
 
@@ -90,8 +91,8 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.BookVi
                 noticeDialog.setTitle(context.getString(R.string.delete_book));
                 noticeDialog.setMessage(
                         String.format("%s" + mBooks.get(holder.getAdapterPosition()).getTitle() + "%s"
-                                ,context.getString(R.string.delete_hint_1)
-                                ,context.getString(R.string.delete_hint_2)));
+                                , context.getString(R.string.delete_hint_1)
+                                , context.getString(R.string.delete_hint_2)));
                 noticeDialog.setCancelable(true);
                 noticeDialog.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override

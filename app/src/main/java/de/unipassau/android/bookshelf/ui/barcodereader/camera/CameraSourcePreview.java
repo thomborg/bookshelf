@@ -22,7 +22,6 @@ package de.unipassau.android.bookshelf.ui.barcodereader.camera;
 import android.Manifest;
 import android.content.Context;
 import android.content.res.Configuration;
-import androidx.annotation.RequiresPermission;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -33,6 +32,14 @@ import com.google.android.gms.common.images.Size;
 
 import java.io.IOException;
 
+import androidx.annotation.RequiresPermission;
+
+/**
+ * Modifizierte Klasse von dem Google Examples (https://github.com/googlesamples/android-vision/tree/master/visionSamples/barcode-reader).
+ * Erstellt einen Barcode reader und gewährt es die erkannten Barcodes für die Speicherung auszuwählen.
+ * <p>
+ * Wichtig! Die Camera Preview startet erste wenn die benötigten Google Play Services geladen wurden. Unterumständen muss beim ersten App start die Activity erneut geöffnet werden um die Camera zu starten.
+ */
 public class CameraSourcePreview extends ViewGroup {
     private static final String TAG = "CameraSourcePreview";
 
@@ -116,7 +123,7 @@ public class CameraSourcePreview extends ViewGroup {
             try {
                 startIfReady();
             } catch (SecurityException se) {
-                Log.e(TAG,"Do not have permission to start the camera", se);
+                Log.e(TAG, "Do not have permission to start the camera", se);
             } catch (IOException e) {
                 Log.e(TAG, "Could not start camera source.", e);
             }
@@ -157,12 +164,12 @@ public class CameraSourcePreview extends ViewGroup {
 
         // Computes height and width for potentially doing fit width.
         int childWidth = layoutWidth;
-        int childHeight = (int)(((float) layoutWidth / (float) width) * height);
+        int childHeight = (int) (((float) layoutWidth / (float) width) * height);
 
         // If height is too tall using fit width, does fit height instead.
         if (childHeight > layoutHeight) {
             childHeight = layoutHeight;
-            childWidth = (int)(((float) layoutHeight / (float) height) * width);
+            childWidth = (int) (((float) layoutHeight / (float) height) * width);
         }
 
         for (int i = 0; i < getChildCount(); ++i) {
@@ -172,7 +179,7 @@ public class CameraSourcePreview extends ViewGroup {
         try {
             startIfReady();
         } catch (SecurityException se) {
-            Log.e(TAG,"Do not have permission to start the camera", se);
+            Log.e(TAG, "Do not have permission to start the camera", se);
         } catch (IOException e) {
             Log.e(TAG, "Could not start camera source.", e);
         }
