@@ -4,6 +4,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -54,15 +63,14 @@ public class MainActivity extends AppCompatActivity {
     private static final String JSON_KEY_PAGECOUNT = "pageCount";
     private BookViewModel mBookViewModel;
     private BookListAdapter adapter;
-    private ArrayAdapter shelfAdapter;
     private String[] shelfArray;
     private Spinner shelfSpinner;
+    private String currentShelf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         RecyclerView recyclerView = findViewById(R.id.booksRecyclerView);
         adapter = new BookListAdapter(this);
@@ -102,6 +110,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+        currentShelf = getString(R.string.show_all_books);
     }
 
     @Override
@@ -111,11 +121,10 @@ public class MainActivity extends AppCompatActivity {
             shelfArray = new String[tmp.length + 1];
             System.arraycopy(tmp, 0, shelfArray, 0, tmp.length);
             shelfArray[shelfArray.length - 1] = getString(R.string.show_all_books);
-            shelfAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, shelfArray);
-            shelfSpinner.setAdapter(shelfAdapter);
+            shelfSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, shelfArray));
         }
 
-
+        showShelf(currentShelf);
         super.onStart();
     }
 
@@ -137,6 +146,12 @@ public class MainActivity extends AppCompatActivity {
 
     public class MainAsyncTask extends BookApiClient {
 
+        /**
+         * @param jsonObject wird von der doInBackground der Klasse BookApiClient geliefert.
+         *                   Wenn mit der Internetverbindung alles stimmt, ist das das JSONObject, was von Google Books API zurückgegeben wurde.
+         * Filtert die nötigen Informationen zum Buch aus dem JSON heraus und speichert sie kurzzeitig im ResultDTO.
+         * Schließlich wird das Buch in die Datenbank eingefügt und in der DisplayBookActivity angezeigt.
+         */
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
             if (jsonObject == null) {
@@ -219,7 +234,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Zeigt die Bücher an, die im Regal "shelfToShow" stehen
+     * Methodenaufruf folgt nach Klick auf den shelfSpinner
+     * @param shelfToShow Regal, welches angezeigt werden soll
+     */
     protected void showShelf(String shelfToShow) {
+        currentShelf = shelfToShow;
         if (shelfToShow.equals(getString(R.string.show_all_books))) {
             adapter.setBooks(mBookViewModel.getAllBooks().getValue());
         } else {
